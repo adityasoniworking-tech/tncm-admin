@@ -1,0 +1,675 @@
+/* --- DASHBOARD ENHANCED STYLING --- */
+
+/* ========================================
+   1. DASHBOARD CONTAINER
+   ======================================== */
+   /* Dashboard ka main container - background aur layout */
+
+.dashboard-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated Background Elements */
+.dashboard-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(197, 160, 89, 0.1) 0%, transparent 70%);
+    animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========================================
+   2. STAT CARDS STYLING
+   ======================================== */
+   /* Dashboard ke stat cards - compact aur modern */
+
+.stat-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+/* Shimmer animation for stat cards */
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Hover effect for stat cards */
+.stat-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Individual card colors */
+.stat-card:nth-child(1) {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(255, 255, 255, 0.95) 100%);
+    border-color: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+}
+
+.stat-card:nth-child(2) {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(255, 255, 255, 0.95) 100%);
+    border-color: rgba(245, 158, 11, 0.2);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
+}
+
+.stat-card:nth-child(3) {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(255, 255, 255, 0.95) 100%);
+    border-color: rgba(16, 185, 129, 0.2);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15);
+}
+
+/* ========================================
+   3. STAT NUMBERS STYLING
+   ======================================== */
+   /* Stat cards mein numbers ka styling - smaller size */
+
+.stat-card p#statTotal,
+.stat-card p#statPending,
+.stat-card p#statRevenue {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    position: relative;
+}
+
+/* Text overlay effect */
+.stat-card p#statTotal::after,
+.stat-card p#statPending::after,
+.stat-card p#statRevenue::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ========================================
+   4. STAT ICONS STYLING
+   ======================================== */
+   /* Stat cards mein icons ka styling - smaller size */
+
+.stat-card i {
+    font-size: 2rem;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Icon hover effect */
+.stat-card:hover i {
+    opacity: 1;
+    transform: scale(1.1) rotate(5deg);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* Icon specific colors */
+.stat-card:nth-child(1) i {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-card:nth-child(2) i {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-card:nth-child(3) i {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ========================================
+   5. INVENTORY HEADER STYLING
+   ======================================== */
+   /* Inventory section ka header styling */
+
+.inventory-header {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.inventory-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* ========================================
+   6. INVENTORY CARDS STYLING
+   ======================================== */
+   /* Inventory cards ka styling */
+
+.inventory-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.inventory-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   7. QUICK ACTIONS STYLING
+   ======================================== */
+   /* Quick actions section ka styling */
+
+.quick-actions-container {
+    background: linear-gradient(135deg, #fef3c7 0%, #fef9e7 100%);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(197, 160, 89, 0.1);
+}
+
+.quick-action-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.quick-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Quick action icons */
+.quick-action-btn i {
+    font-size: 1.5rem;
+    color: #6b7280;
+    transition: all 0.3s ease;
+}
+
+.quick-action-btn:hover i {
+    color: #c5a059;
+    transform: scale(1.1);
+}
+
+/* Quick action text */
+.quick-action-btn span {
+    display: block;
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.quick-action-btn:hover span {
+    color: #c5a059;
+}
+
+/* ========================================
+   8. PROGRESS BARS STYLING
+   ======================================== */
+   /* Progress bars ka styling */
+
+.progress-bar {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar::after {
+    content: '';
+    height: 100%;
+    background: currentColor;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* ========================================
+   9. MOBILE NAVIGATION FIXES
+   ======================================== */
+   /* Mobile navigation ke liye icon fixes */
+
+@media (max-width: 768px) {
+    /* Dashboard Container Mobile */
+    .dashboard-container {
+        padding: 10px !important;
+        min-height: 100vh !important;
+    }
+
+    /* Stat Cards Mobile */
+    .stat-card {
+        padding: 12px !important;
+        margin-bottom: 12px !important;
+        border-radius: 10px !important;
+    }
+
+    .stat-card p#statTotal,
+    .stat-card p#statPending,
+    .stat-card p#statRevenue {
+        font-size: 1.5rem !important;
+    }
+
+    .stat-card i {
+        font-size: 1.5rem !important;
+    }
+
+    /* Inventory Header Mobile */
+    .inventory-header {
+        padding: 12px 16px !important;
+        border-radius: 10px !important;
+    }
+
+    .inventory-header h3 {
+        font-size: 1rem !important;
+    }
+
+    /* Inventory Cards Mobile */
+    .inventory-card {
+        padding: 12px !important;
+        margin-bottom: 10px !important;
+        border-radius: 10px !important;
+    }
+
+    /* Quick Actions Mobile */
+    .quick-actions-container {
+        padding: 16px !important;
+        border-radius: 10px !important;
+    }
+
+    .quick-action-btn {
+        padding: 12px !important;
+        border-radius: 8px !important;
+    }
+
+    .quick-action-btn i {
+        font-size: 1.2rem !important;
+    }
+
+    .quick-action-btn span {
+        font-size: 0.7rem !important;
+        margin-top: 3px !important;
+    }
+
+    /* Progress Bars Mobile */
+    .progress-bar {
+        height: 4px !important;
+    }
+
+    /* Dashboard Grid Mobile */
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* Metrics Mobile */
+    .metric-number {
+        font-size: 2rem !important;
+    }
+
+    /* Text Mobile */
+    h1, h2, h3 {
+        font-size: 1.2rem !important;
+    }
+
+    p, span {
+        font-size: 0.9rem !important;
+    }
+
+    .bottom-nav-mobile button i {
+        font-size: 1rem !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .bottom-nav-mobile button.active-mobile i {
+        transform: scale(1.15) !important;
+        filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5)) !important;
+    }
+
+    .bottom-nav-mobile span {
+        font-size: 0.6rem !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .bottom-nav-mobile button.active-mobile span {
+        color: #f59e0b !important;
+        font-weight: 700 !important;
+    }
+
+    /* Exit icon centering */
+    .bottom-nav-mobile button:last-child {
+        justify-content: center !important;
+    }
+
+    .bottom-nav-mobile button:last-child i {
+        font-size: 1rem !important;
+    }
+
+    /* Active indicator dot */
+    .bottom-nav-mobile button.active-mobile::after {
+        content: '' !important;
+        position: absolute !important;
+        top: 8px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 6px !important;
+        height: 6px !important;
+        background: #f59e0b !important;
+        border-radius: 50% !important;
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.6) !important;
+    }
+}
+
+/* Extra Small Mobile (≤480px) */
+@media (max-width: 480px) {
+    .dashboard-container {
+        padding: 8px !important;
+    }
+
+    .stat-card {
+        padding: 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .stat-card p#statTotal,
+    .stat-card p#statPending,
+    .stat-card p#statRevenue {
+        font-size: 1.3rem !important;
+    }
+
+    .stat-card i {
+        font-size: 1.3rem !important;
+    }
+
+    .inventory-header {
+        padding: 10px 12px !important;
+    }
+
+    .inventory-header h3 {
+        font-size: 0.9rem !important;
+    }
+
+    .inventory-card {
+        padding: 10px !important;
+    }
+
+    .quick-actions-container {
+        padding: 12px !important;
+    }
+
+    .quick-action-btn {
+        padding: 10px !important;
+    }
+
+    .quick-action-btn i {
+        font-size: 1rem !important;
+    }
+
+    .quick-action-btn span {
+        font-size: 0.65rem !important;
+    }
+
+    .metric-number {
+        font-size: 1.8rem !important;
+    }
+
+    h1, h2, h3 {
+        font-size: 1.1rem !important;
+    }
+
+    p, span {
+        font-size: 0.85rem !important;
+    }
+}
+
+/* Ultra Small Mobile (≤360px) */
+@media (max-width: 360px) {
+    .dashboard-container {
+        padding: 6px !important;
+    }
+
+    .stat-card {
+        padding: 8px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .stat-card p#statTotal,
+    .stat-card p#statPending,
+    .stat-card p#statRevenue {
+        font-size: 1.2rem !important;
+    }
+
+    .stat-card i {
+        font-size: 1.2rem !important;
+    }
+
+    .inventory-header {
+        padding: 8px 10px !important;
+    }
+
+    .inventory-header h3 {
+        font-size: 0.85rem !important;
+    }
+
+    .inventory-card {
+        padding: 8px !important;
+    }
+
+    .quick-actions-container {
+        padding: 10px !important;
+    }
+
+    .quick-action-btn {
+        padding: 8px !important;
+    }
+
+    .quick-action-btn i {
+        font-size: 0.9rem !important;
+    }
+
+    .quick-action-btn span {
+        font-size: 0.6rem !important;
+    }
+
+    .metric-number {
+        font-size: 1.6rem !important;
+    }
+
+    h1, h2, h3 {
+        font-size: 1rem !important;
+    }
+
+    p, span {
+        font-size: 0.8rem !important;
+    }
+}
+
+/* ========================================
+   10. UTILITY CLASSES
+   ======================================== */
+   /* Common utility classes aur helpers */
+
+/* Floating particles effect */
+.floating-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(197, 160, 89, 0.1);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 0.3;
+    }
+    25% {
+        transform: translateY(-20px) translateX(10px) scale(1.1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateY(-10px) translateX(-10px) scale(0.9);
+        opacity: 0.4;
+    }
+    75% {
+        transform: translateY(-30px) translateX(5px) scale(1.05);
+        opacity: 0.6;
+    }
+}
+
+/* Text shadow glow effect */
+.text-shadow-glow {
+    text-shadow: 0 0 20px rgba(197, 160, 89, 0.5);
+}
+
+/* Enhanced button styling */
+.btn-enhanced {
+    background: linear-gradient(135deg, #c5a059 0%, #d4a574 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-enhanced:hover::before {
+    left: 100%;
+}
+
+.btn-enhanced:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(197, 160, 89, 0.4);
+}
+
+/* Enhanced numbers styling */
+.metric-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    position: relative;
+}
+
+.metric-number::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: currentColor;
+    border-radius: 2px;
+    opacity: 0.3;
+}
+
+/* Loading animation */
+.loading-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Success animation */
+.success-animation {
+    animation: success 0.6s ease-out;
+}
+
+@keyframes success {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   END OF dashboard.css
+   ======================================== */

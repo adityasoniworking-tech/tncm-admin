@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard - thenuttychocomorsels</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="Assests/site.webmanifest">
+    <meta name="theme-color" content="#f59e0b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Admin Portal">
+    <meta name="application-name" content="Admin Portal">
+    <meta name="msapplication-TileColor" content="#f59e0b">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- PWA Icons - Local Assets -->
+    <link rel="apple-touch-icon" sizes="192x192" href="Assests/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="Assests/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Assests/favicon-16x16.png">
+    <link rel="shortcut icon" href="Assests/favicon.ico">
+    
+    <link rel="stylesheet" href="CSS/admin-style.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="CSS/tailwind.css">
+    <link rel="stylesheet" href="CSS/dashboard.css">
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+
+    <style>
+        #adminLoginOverlay.custom-overlay {
+            background-color: #fbbf24;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div id="adminLoginOverlay" class="custom-overlay">
+    <div class="login-modal">
+        <div class="lock-icon-container">
+            <img src="Assests/apple-touch-icon.png" alt="Lock Icon" class="w-8 h-8">
+        </div>
+
+        <h2>Admin Login</h2>
+        <p>Enter credentials to manage store</p>
+
+        <div class="input-group">
+            <input type="text" id="adminUser" placeholder="Username">
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="adminPass" placeholder="Password">
+        </div>
+
+        <div class="show-pass-container">
+            <input type="checkbox" id="showPassCheck" onclick="togglePasswordWithCheckbox()">
+            <label for="showPassCheck">Show Password</label>
+        </div>
+
+        <button onclick="checkAdminLogin()" class="login-btn">Login</button>
+
+        <p id="loginError" class="error-msg"></p>
+    </div>
+</div>
+
+    <!-- Hidden by default; shown only after successful admin login -->
+    <div class="app-container flex min-h-screen" style="display: none;">
+        <aside class="sidebar hidden lg:flex flex-col w-64 bg-gray-900 text-white fixed h-full z-50">
+            <div class="sidebar-header flex items-center gap-3">
+                <div class="bg-amber-500 p-1 rounded-lg shadow-lg shadow-amber-500/20">
+                    <img src="Assests/favicon.ico" alt="Logo" class="w-5 h-5">
+                </div>
+                <span class="text-xl font-bold tracking-tight">NuttyAdmin</span>
+            </div>
+            
+            <nav class="sidebar-menu flex-grow py-4">
+                <a href="#" onclick="setActiveNav(this); showSection('dashboard')" class="nav-link active-link flex items-center gap-3">
+                    <i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span>
+                </a>
+                <a href="#" onclick="setActiveNav(this); showSection('orders')" class="nav-link flex items-center gap-3">
+                    <i class="fa-solid fa-receipt"></i> <span>Orders</span>
+                    <span class="bg-red-500/10 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full ml-auto border border-red-500/20" id="pendingCount">0</span>
+                </a>
+                <a href="#" onclick="setActiveNav(this); showSection('menu')" class="nav-link flex items-center gap-3">
+                    <i class="fa-solid fa-layer-group"></i> <span>Manage Menu</span>
+                </a>
+            </nav>
+
+            <div class="logout-btn">
+                <a href="#" onclick="logoutAdmin()" class="nav-link flex items-center gap-3 text-gray-400 hover:text-red-400 !bg-transparent">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Sign Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content w-full lg:ml-64">
+            <header class="top-header flex justify-between items-center mb-8 bg-white p-4 rounded-xl shadow-sm">
+                <div class="page-title">
+                    <h1 id="pageTitle" class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                    <p id="pageSubTitle" class="text-gray-500">Live overview of your bakery</p>
+                </div>
+                <div class="admin-profile flex items-center gap-4">
+                    <span class="live-indicator flex items-center gap-2 text-green-500 font-semibold">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Live
+                    </span>
+                    <div class="avatar bg-gray-200 p-2 rounded-full cursor-pointer hover:bg-gray-300" onclick="logoutAdmin()">
+                        <i class="fa-solid fa-power-off text-red-600"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div id="dashboardSection" class="max-w-[1400px] mx-auto">
+    <div class="stats-row grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="stat-card bg-white p-6 rounded-xl shadow-sm flex justify-between items-center border-b-4 border-blue-400">
+            <div><h3 class="text-gray-500 text-sm">Total Orders</h3><p id="statTotal" class="text-3xl font-bold">0</p></div>
+            <i class="fa-solid fa-bag-shopping text-4xl text-blue-100"></i>
+        </div>
+        <div class="stat-card bg-white p-6 rounded-xl shadow-sm flex justify-between items-center border-b-4 border-amber-400">
+            <div><h3 class="text-gray-500 text-sm">Pending</h3><p id="statPending" class="text-3xl font-bold text-amber-500">0</p></div>
+            <i class="fa-solid fa-clock text-4xl text-amber-100"></i>
+        </div>
+        <div class="stat-card bg-white p-6 rounded-xl shadow-sm flex justify-between items-center border-b-4 border-green-400">
+            <div><h3 class="text-gray-500 text-sm">Revenue</h3><p id="statRevenue" class="text-3xl font-bold text-green-600">₹0.00</p></div>
+            <i class="fa-solid fa-indian-rupee-sign text-4xl text-green-100"></i>
+        </div>
+    </div>
+
+    <!-- Inventory Health Card -->
+    <div class="bg-gradient-to-br from-slate-50 to-slate-100 p-8 rounded-2xl shadow-xl border border-slate-200 mb-8">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <i class="fa-solid fa-warehouse text-white text-xl"></i>
+                </div>
+                Inventory Health
+            </h3>
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-sm font-semibold text-green-600">Live</span>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-red-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-red-500 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-exclamation-triangle text-white text-lg"></i>
+                    </div>
+                    <div class="text-right">
+                        <span id="outOfStockCount" class="text-3xl font-bold text-red-600">0</span>
+                        <p class="text-xs text-red-500 font-medium">ITEMS</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-red-700 text-lg mb-1">Out of Stock</h4>
+                    <p class="text-sm text-red-600">Items needing immediate restock</p>
+                    <div class="mt-3 w-full bg-red-100 rounded-full h-2">
+                        <div class="bg-red-500 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-green-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-500 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-check-circle text-white text-lg"></i>
+                    </div>
+                    <div class="text-right">
+                        <span id="inStockCount" class="text-3xl font-bold text-green-600">0</span>
+                        <p class="text-xs text-green-500 font-medium">ITEMS</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-green-700 text-lg mb-1">Available Items</h4>
+                    <p class="text-sm text-green-600">Currently in stock and ready</p>
+                    <div class="mt-3 w-full bg-green-100 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-blue-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-cube text-white text-lg"></i>
+                    </div>
+                    <div class="text-right">
+                        <span id="categoryCount" class="text-3xl font-bold text-blue-600">0</span>
+                        <p class="text-xs text-blue-500 font-medium">TOTAL</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-blue-700 text-lg mb-1">Total Items</h4>
+                    <p class="text-sm text-blue-600">Complete menu inventory</p>
+                    <div class="mt-3 w-full bg-blue-100 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6 flex items-center justify-center gap-4 text-sm text-slate-600">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                <span>Critical</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Healthy</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span>Total</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Action Shortcuts -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
+        <h3 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-bolt text-yellow-500"></i>
+            Quick Actions
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <button onclick="showSection('menu')" class="flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:from-blue-100 hover:to-blue-200 transition-all group">
+                <i class="fa-solid fa-edit text-3xl text-blue-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                <span class="text-sm font-semibold text-blue-700">Update Prices</span>
+            </button>
+            <button onclick="exportData()" class="flex flex-col items-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:from-green-100 hover:to-green-200 transition-all group">
+                <i class="fa-solid fa-download text-3xl text-green-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                <span class="text-sm font-semibold text-green-700">Export Data</span>
+            </button>
+            <button onclick="refreshStats()" class="flex flex-col items-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl hover:from-purple-100 hover:to-purple-200 transition-all group">
+                <i class="fa-solid fa-sync text-3xl text-purple-600 mb-2 group-hover:scale-110 transition-transform"></i>
+                <span class="text-sm font-semibold text-purple-700">Refresh Stats</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+            <div id="ordersSection" class="hidden max-w-[1400px] mx-auto pb-24">
+    <div class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <h3 class="text-xl font-bold text-gray-700">Incoming Orders</h3>
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="relative flex-grow md:w-80">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" id="orderSearchInput" oninput="filterOrders()" onkeyup="filterOrders()" placeholder="Search Name, ID, Phone or Address..." 
+                    class="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl w-full outline-none focus:ring-2 focus:ring-amber-400 shadow-sm transition-all">
+            </div>
+            <button onclick="deleteAllOrders()" class="bg-red-50 text-red-600 px-4 py-2.5 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-sm flex items-center gap-2 font-bold text-sm whitespace-nowrap border border-red-100">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="ordersDisplayArea" class="w-full">
+        <div id="ordersList" class="orders-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start"></div>
+    </div>
+</div>
+
+            <div id="menuSection" class="hidden space-y-4 pb-24">
+    
+    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+        <button onclick="toggleAccordion('filterCollapse')" class="w-full flex justify-between items-center p-5 bg-purple-50 hover:bg-purple-100 transition">
+            <h3 class="text-lg font-bold flex items-center gap-2 text-purple-700">
+                <i class="fa-solid fa-tags"></i> 1. Manage Menu Filters
+            </h3>
+            <i class="fa-solid fa-chevron-down text-purple-700 transition-transform duration-300" id="icon-filterCollapse"></i>
+        </button>
+        <div id="filterCollapse" class="hidden p-6 border-t border-purple-100 animate-fadeIn">
+            <div class="flex flex-col sm:flex-row gap-2 mb-4">
+                <input type="text" id="newCatName" placeholder="e.g. Gift Card" class="flex-grow border p-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-300">
+                <button onclick="addNewCategory()" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-700 transition">Add Filter</button>
+            </div>
+            <div id="adminCategoryList" class="flex flex-wrap gap-2"></div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+        <button onclick="toggleAccordion('addProductCollapse')" class="w-full flex justify-between items-center p-5 bg-blue-50 hover:bg-blue-100 transition">
+            <h3 class="text-lg font-bold flex items-center gap-2 text-blue-700">
+                <i class="fa-solid fa-plus-circle"></i> 2. Add New Product
+            </h3>
+            <i class="fa-solid fa-chevron-down text-blue-700 transition-transform duration-300" id="icon-addProductCollapse"></i>
+        </button>
+        <div id="addProductCollapse" class="hidden p-6 border-t border-blue-100 animate-fadeIn">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <input type="text" id="newName" placeholder="Product Name" class="border p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-400">
+                <input type="number" id="newPrice" placeholder="Price (₹)" class="border p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-400">
+                <select id="newCat" class="border p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-400"></select>
+                <input type="text" id="newImgLink" placeholder="Paste Image Link (URL)" class="border p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-400">
+            </div>
+            <button onclick="addNewItemViaLink()" class="btn-add-submit bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition w-full sm:w-auto">Save Product</button>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+        <button onclick="toggleAccordion('deleteCollapse')" class="w-full flex justify-between items-center p-5 bg-red-50 hover:bg-red-100 transition">
+            <h3 class="text-lg font-bold flex items-center gap-2 text-red-700">
+                <i class="fa-solid fa-trash-can"></i> 3. Quick Delete Item
+            </h3>
+            <i class="fa-solid fa-chevron-down text-red-700 transition-transform duration-300" id="icon-deleteCollapse"></i>
+        </button>
+        <div id="deleteCollapse" class="hidden p-6 border-t border-red-100 animate-fadeIn">
+            <div class="flex flex-col sm:flex-row gap-2">
+                <input type="number" id="deleteItemId" placeholder="Enter ID" class="flex-grow border p-3 rounded-lg outline-none focus:ring-2 focus:ring-red-300">
+                <button onclick="deleteMenuItem()" class="bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+        <button onclick="toggleAccordion('inventoryCollapse')" class="w-full flex justify-between items-center p-5 bg-amber-50 hover:bg-amber-100 transition">
+            <h3 class="text-lg font-bold flex items-center gap-2 text-amber-700">
+                <i class="fa-solid fa-boxes-stacked"></i> 4. Live Menu Inventory
+            </h3>
+            <i class="fa-solid fa-chevron-down text-amber-700 transition-transform duration-300" id="icon-inventoryCollapse"></i>
+        </button>
+        
+        <div id="inventoryCollapse" class="hidden animate-fadeIn">
+            <div class="p-4 bg-gray-50 border-b flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="relative w-full md:w-80">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="adminSearchInput" onkeyup="filterAdminTable()" placeholder="Search inventory..." 
+                        class="pl-10 pr-4 py-2 border rounded-xl w-full outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <button onclick="uploadDefaultMenu()" class="text-xs bg-amber-200 text-amber-800 px-4 py-2 rounded-lg font-bold hover:bg-amber-300 transition">
+                    Reset Default Menu
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left" id="adminTableMain">
+                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs font-bold">
+                        <tr>
+                            <th class="p-4">Item</th>
+                            <th class="p-4">Price</th>
+                            <th class="p-4">Stock</th>
+                            <th class="p-4">Link</th>
+                            <th class="p-4">Action</th>
+                            <th class="p-4">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminMenuList" class="divide-y text-sm text-gray-700"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <!-- Hidden by default; shown only after successful admin login -->
+    <div class="bottom-nav-mobile lg:hidden" style="background: linear-gradient(180deg, #111827 0%, #1f2937 100%) !important; display: none;">
+    <button onclick="setMobileActive(this); showSection('dashboard')" class="active-mobile">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </button>
+    <button onclick="setMobileActive(this); showSection('orders')">
+        <i class="fa-solid fa-box-open"></i>
+        <span>Orders</span>
+    </button>
+    <button onclick="setMobileActive(this); showSection('menu')">
+        <i class="fa-solid fa-utensils"></i>
+        <span>Menu</span>
+    </button>
+    <button onclick="logoutAdmin()">
+        <i class="fa-solid fa-power-off" style="color: #ef4444;"></i>
+        <span>Exit</span>
+    </button>
+</div>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/pwa-sw.js')
+                .then(registration => {
+                    console.log('PWA Service Worker registered:', registration);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        console.log('PWA update found');
+                    });
+                    
+                    // Prompt for update
+                    registration.addEventListener('controllerchange', () => {
+                        console.log('PWA controller changed');
+                        window.location.reload();
+                    });
+                })
+                .catch(error => {
+                    console.error('PWA Service Worker registration failed:', error);
+                });
+        });
+    }
+
+    // PWA Install Prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('PWA install prompt detected');
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Install button removed - use browser's native install prompt
+    });
+
+    // Check if app is running as PWA
+    function isPWA() {
+        return window.matchMedia('(display-mode: standalone)').matches || 
+               window.navigator.standalone === true || 
+               document.referrer.includes('android-app://');
+    }
+
+    // PWA Performance Optimization
+    if ('serviceWorker' in navigator) {
+        // Preload critical resources
+        window.addEventListener('load', () => {
+            if ('caches' in window) {
+                caches.open('admin-portal-preload').then(cache => {
+                    cache.addAll([
+                        'CSS/admin-style.css',
+                        'CSS/dashboard.css',
+                        'JS/firebase-config.js'
+                    ]);
+                });
+            }
+        });
+    }
+    </script>
+
+    <!-- Admin Portal Modules -->
+    <script src="JS/firebase-config.js"></script>
+    <script src="JS/auth.js"></script>
+    <script src="JS/navigation.js"></script>
+    <script src="JS/dashboard.js"></script>
+    <script src="JS/orders.js"></script>
+    <script src="JS/menu.js"></script>
+    <script src="JS/categories.js"></script>
+    <script src="JS/products.js"></script>
+    
+    <!-- Order Notification System -->
+    <script src="JS/notification.js"></script>
+    
+    <!-- PWA Install Management -->
+    <script src="JS/pwa-install.js"></script>
+    
+    <!-- PWA Auto Update Management -->
+    <script src="JS/pwa-updater.js"></script>
+    
+    <!-- Dashboard Enhanced Styling -->
+    <link rel="stylesheet" href="CSS/dashboard.css">
+    
+</body>
+</html>

@@ -1,0 +1,3332 @@
+/* admin-style.css - Properly Organized Version */
+
+
+
+/* ========================================
+
+   1. GLOBAL STYLES & TYPOGRAPHY
+
+   ======================================== */
+
+   /* Ye sabke liye common hai - fonts, colors, basic setup */
+
+
+
+body {
+
+    font-family: 'Inter', sans-serif;
+
+    margin: 0;
+
+    padding: 0;
+
+    background-color: #f3f4f6;
+
+    color: #374151;
+
+    line-height: 1.6;
+
+    min-height: 100vh;
+
+}
+
+
+
+h1, h2, h3 {
+
+    color: #111827;
+
+    font-weight: 600;
+
+}
+
+
+
+input, select, button {
+
+    font-family: inherit;
+
+    font-size: 100%;
+
+    box-sizing: border-box;
+
+}
+
+
+
+/* ========================================
+
+   2. LOGIN SECTION
+
+   ======================================== */
+
+   /* Login page ka styling - jab user login karta hai */
+
+
+
+#adminLoginOverlay {
+
+    position: fixed;
+
+    top: 0; left: 0; width: 100%; height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.85);
+
+    display: flex; justify-content: center; align-items: center;
+
+    z-index: 3000; 
+
+}
+
+
+
+.login-modal {
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    width: 90%;
+
+    max-width: 380px;
+
+    text-align: center;
+
+}
+
+
+
+/* Lock Icon Container */
+
+.lock-icon-container {
+
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+
+    width: 60px;
+
+    height: 60px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: 0 auto 20px auto;
+
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+
+}
+
+
+
+.lock-icon-container i {
+
+    color: white;
+
+    font-size: 1.5rem;
+
+}
+
+
+
+/* Login Title */
+
+.login-modal h2 {
+
+    font-size: 1.8rem;
+
+    font-weight: 700;
+
+    color: #1f2937;
+
+    margin-bottom: 8px;
+
+}
+
+
+
+/* Login Subtitle */
+
+.login-modal p {
+
+    color: #6b7280;
+
+    font-size: 0.9rem;
+
+    margin-bottom: 25px;
+
+}
+
+
+
+/* Input Groups */
+
+.input-group {
+
+    position: relative;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+.input-group input {
+
+    width: 100%;
+
+    padding: 14px 16px;
+
+    background: #f9fafb;
+
+    border: 2px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    font-size: 1rem;
+
+    color: #374151;
+
+    transition: all 0.3s ease;
+
+    box-sizing: border-box;
+
+}
+
+
+
+.input-group input:focus {
+
+    outline: none;
+
+    border-color: #f59e0b;
+
+    background: white;
+
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+
+}
+
+
+
+.input-group input::placeholder {
+
+    color: #9ca3af;
+
+}
+
+
+
+/* Show Password Container */
+
+.show-pass-container {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 25px;
+
+    font-size: 0.9rem;
+
+    color: #6b7280;
+
+    justify-content: flex-start;
+
+}
+
+
+
+.show-pass-container input[type="checkbox"] {
+
+    width: 18px;
+
+    height: 18px;
+
+    accent-color: #f59e0b;
+
+    cursor: pointer;
+
+}
+
+
+
+.show-pass-container label {
+
+    cursor: pointer;
+
+    user-select: none;
+
+    transition: color 0.3s ease;
+
+}
+
+
+
+.show-pass-container label:hover {
+
+    color: #f59e0b;
+
+}
+
+
+
+/* Login Button */
+
+.login-btn {
+
+    width: 100%;
+
+    padding: 14px 24px;
+
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+
+    color: white;
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    margin-bottom: 15px;
+
+}
+
+
+
+.login-btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+
+}
+
+
+
+.login-btn:active {
+
+    transform: translateY(0);
+
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+
+}
+
+
+
+/* Error Message */
+
+.error-msg {
+
+    color: #ef4444;
+
+    font-size: 0.85rem;
+
+    margin-top: 10px;
+
+    padding: 8px 12px;
+
+    background: rgba(239, 68, 68, 0.1);
+
+    border: 1px solid rgba(239, 68, 68, 0.2);
+
+    border-radius: 6px;
+
+    display: none;
+
+}
+
+
+
+.error-msg.show {
+
+    display: block;
+
+    animation: shake 0.5s ease-in-out;
+
+}
+
+
+
+@keyframes shake {
+
+    0%, 100% { transform: translateX(0); }
+
+    25% { transform: translateX(-5px); }
+
+    75% { transform: translateX(5px); }
+
+}
+
+
+
+/* ========================================
+
+   3. MAIN LAYOUT STRUCTURE
+
+   ======================================== */
+
+   /* Sidebar aur main content ka layout */
+
+
+
+.app-container {
+
+    display: flex;
+
+    min-height: 100vh;
+
+}
+
+
+
+.main-content {
+
+    flex-grow: 1;
+
+    padding: 20px;
+
+    margin-left: 250px; /* Desktop mein sidebar ke liye space */
+
+    width: calc(100% - 250px);
+
+    box-sizing: border-box;
+
+}
+
+
+
+@media (max-width: 768px) {
+
+    .main-content {
+
+        margin-left: 0;
+
+        width: 100%;
+
+        padding-bottom: 80px; /* Mobile nav ke liye space */
+
+    }
+
+}
+
+
+
+/* ========================================
+
+   4. SIDEBAR STYLING
+
+   ======================================== */
+
+   /* Left side navigation bar - desktop ke liye */
+
+
+
+.sidebar {
+
+    width: 260px;
+
+    background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+
+    color: white;
+
+    position: fixed;
+
+    height: 100%;
+
+    z-index: 50;
+
+    display: flex;
+
+    flex-direction: column;
+
+    transition: all 0.3s ease;
+
+}
+
+
+
+/* Sidebar header - logo aur title */
+
+.sidebar-header {
+
+    padding: 2rem 1.5rem;
+
+    font-family: 'Inter', sans-serif;
+
+    letter-spacing: -0.5px;
+
+}
+
+
+
+/* Sidebar menu items */
+
+.nav-link {
+
+    margin: 4px 12px;
+
+    padding: 12px 16px !important;
+
+    color: #9ca3af !important;
+
+    font-weight: 500;
+
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    position: relative;
+
+    border-radius: 12px !important;
+
+}
+
+
+
+/* Nav link hover effect */
+
+.nav-link:hover {
+
+    background: rgba(255, 255, 255, 0.05) !important;
+
+    color: #ffffff !important;
+
+    transform: translateX(4px);
+
+}
+
+
+
+/* Active nav link styling */
+
+.nav-link.active-link {
+
+    background: rgba(245, 158, 11, 0.1) !important;
+
+    color: #f59e0b !important;
+
+    box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.2);
+
+}
+
+
+
+/* Active link ka left indicator */
+
+.nav-link.active-link::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: -12px;
+
+    top: 20%;
+
+    height: 60%;
+
+    width: 4px;
+
+    background: #f59e0b;
+
+    border-radius: 0 4px 4px 0;
+
+    box-shadow: 4px 0 12px rgba(245, 158, 11, 0.5);
+
+}
+
+
+
+/* Nav icons styling */
+
+.nav-link i {
+
+    font-size: 1.1rem;
+
+    width: 24px;
+
+    text-align: center;
+
+    transition: transform 0.3s ease;
+
+}
+
+
+
+.nav-link:hover i {
+
+    transform: scale(1.2);
+
+}
+
+
+
+/* Logout button special styling */
+
+.logout-btn {
+
+    margin-top: auto;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+    padding: 20px !important;
+
+}
+
+
+
+/* Sidebar responsive - mobile mein hide */
+
+@media (max-width: 768px) {
+
+    .sidebar { display: none; }
+
+}
+
+
+
+/* ========================================
+
+   5. MOBILE NAVIGATION
+
+   ======================================== */
+
+   /* Bottom navigation bar - mobile ke liye */
+
+
+
+.bottom-nav-mobile {
+
+    display: none;
+
+    position: fixed;
+
+    bottom: 20px; left: 5%; width: 90%; height: 70px;
+
+    background: linear-gradient(180deg, #111827 0%, #1f2937 100%) !important;
+
+    border-radius: 25px;
+
+    backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+    z-index: 9999;
+
+    justify-content: space-around;
+
+    align-items: center;
+
+    padding: 0 15px;
+
+}
+
+
+
+@media (max-width: 768px) {
+
+    .bottom-nav-mobile { 
+        display: flex !important; 
+        position: fixed !important;
+        bottom: 10px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 95% !important;
+        max-width: 400px !important;
+        z-index: 9999 !important;
+    }
+
+    /* Ensure body has proper padding */
+    body {
+        padding-bottom: 90px !important;
+    }
+
+    /* Main content adjustment */
+    .main-content {
+        padding-bottom: 90px !important;
+    }
+}
+
+
+
+/* Mobile nav buttons */
+
+.bottom-nav-mobile button {
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #9ca3af;
+
+    transition: all 0.3s ease;
+
+    position: relative;
+
+}
+
+
+
+/* Active mobile nav button */
+
+.bottom-nav-mobile button.active-mobile {
+
+    color: #f59e0b !important;
+
+}
+
+
+
+/* Mobile nav icons */
+
+.bottom-nav-mobile button i {
+
+    font-size: 1rem !important;
+
+    transition: all 0.3s ease !important;
+
+}
+
+
+
+.bottom-nav-mobile button.active-mobile i {
+
+    transform: scale(1.15) !important;
+
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5)) !important;
+
+}
+
+
+
+/* Mobile nav text */
+
+.bottom-nav-mobile span {
+
+    font-size: 0.6rem !important;
+
+    font-weight: 600;
+
+    transition: all 0.3s ease !important;
+
+}
+
+
+
+.bottom-nav-mobile button.active-mobile span {
+
+    color: #f59e0b !important;
+
+    font-weight: 700 !important;
+
+}
+
+
+
+/* Active indicator dot */
+
+.bottom-nav-mobile button.active-mobile::after {
+
+    content: '';
+
+    position: absolute;
+
+    top: 8px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 6px;
+
+    height: 6px;
+
+    background: #f59e0b;
+
+    border-radius: 50%;
+
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+
+}
+
+
+
+/* Exit button centering */
+
+.bottom-nav-mobile button:last-child {
+
+    justify-content: center !important;
+
+}
+
+
+
+/* ========================================
+
+   6. DASHBOARD SECTION
+
+   ======================================== */
+
+   /* Dashboard stats cards aur elements */
+
+
+
+.stats-row {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+    gap: 15px;
+
+    margin-bottom: 30px;
+
+}
+
+
+
+/* Dashboard controls container */
+
+.dashboard-controls {
+
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: center !important;
+
+    gap: 12px !important;
+
+    width: 100% !important;
+
+    background: #ffffff !important;
+
+    padding: 10px !important;
+
+    border-radius: 12px !important;
+
+    margin-bottom: 20px !important;
+
+}
+
+
+
+/* Search container */
+
+.search-container {
+
+    flex: 1 !important;
+
+    position: relative !important;
+
+}
+
+
+
+/* Search input styling */
+
+#orderSearchInput {
+
+    width: 100% !important;
+
+    padding: 10px 10px 10px 40px !important;
+
+    border-radius: 10px !important;
+
+    border: 1px solid #e5e7eb !important;
+
+    font-size: 0.9rem !important;
+
+}
+
+
+
+/* Clear All button */
+
+button[onclick="deleteAllOrders()"] {
+
+    flex-shrink: 0 !important;
+
+    width: 45px !important;
+
+    height: 45px !important;
+
+    display: flex !important;
+
+    justify-content: center !important;
+
+    align-items: center !important;
+
+    background: #fef2f2 !important;
+
+    color: #ef4444 !important;
+
+    border-radius: 10px !important;
+
+    border: 1px solid #fee2e2 !important;
+
+}
+
+
+
+/* Mobile mein "Clear All" text hide */
+
+@media (max-width: 640px) {
+
+    button[onclick="deleteAllOrders()"] span {
+
+        display: none !important;
+
+    }
+
+}
+
+
+
+/* ========================================
+
+   7. ORDERS SECTION
+
+   ======================================== */
+
+   /* Orders cards aur grid layout */
+
+
+
+.orders-grid {
+
+    display: grid !important;
+
+    grid-template-columns: repeat(3, 1fr) !important;
+
+    gap: 15px !important;
+
+}
+
+/* Override any conflicting styles */
+@media (min-width: 768px) and (max-width: 1200px) {
+    .orders-grid { 
+        grid-template-columns: repeat(2, 1fr) !important; 
+    }
+}
+
+@media (min-width: 1201px) {
+    .orders-grid { 
+        grid-template-columns: repeat(3, 1fr) !important; 
+    }
+}
+
+@media (max-width: 767px) {
+    .orders-grid { 
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important; 
+    }
+}
+
+@media (max-width: 480px) {
+
+    .orders-grid { 
+        grid-template-columns: 1fr !important; 
+    }
+
+}
+
+
+
+/* Order card styling */
+
+.order-card {
+
+height: 500px !important;
+
+display: flex;
+
+flex-direction: column !important;
+
+padding: 20px !important;
+
+background: #ffffff !important;
+
+border: 2px solid #000000 !important;
+
+border-radius: 16px !important;
+
+box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+
+transition: transform 0.2s ease;
+
+overflow: hidden !important;
+
+}
+
+
+
+/* Order card header */
+
+.card-header-flex {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+}
+
+
+
+.card-top {
+
+    margin-bottom: 15px !important;
+
+}
+
+
+
+.id-section {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+
+/* Order ID aur time */
+
+.order-id {
+
+    font-size: 0.85rem !important;
+
+    letter-spacing: 0.5px !important;
+
+    color: #1f2937 !important;
+
+    font-weight: 700 !important;
+
+}
+
+
+
+.order-time { 
+
+    font-size: 0.75rem; 
+
+    color: #9ca3af; 
+
+}
+
+
+
+/* Status pills styling */
+
+.status-pill {
+
+    padding: 4px 10px;
+
+    border-radius: 6px;
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
+
+    border: 1px solid currentColor;
+
+}
+
+/* Mobile status pill - smaller text */
+@media (max-width: 640px) {
+    .status-pill {
+        font-size: 0.6rem !important;
+        padding: 3px 8px !important;
+    }
+}
+
+
+/* Status colors */
+
+.status-Pending { background: #fffbeb; color: #92400e; }
+
+.status-Delivered { background: #f0fdf4; color: #15803d; }
+
+.status-Rejected { background: #fef2f2; color: #991b1b; }
+
+.status-Accepted { background: #f0f9ff; color: #075985; }
+
+.status-Ready { background: #fef3c7; color: #92400e; }
+
+
+
+/* User info section */
+
+.user-info { 
+
+    display: flex; 
+
+    align-items: center; 
+
+    gap: 10px; 
+
+}
+
+
+
+.u-icon { 
+
+    width: 30px; 
+
+    height: 30px; 
+
+    background: #f3f4f6; 
+
+    border-radius: 50%; 
+
+    display: flex; 
+
+    justify-content: center; 
+
+    align-items: center; 
+
+}
+
+
+
+.user-name {
+
+    font-size: 1rem !important;
+
+    font-weight: 600 !important;
+
+    color: #111827 !important;
+
+    word-wrap: break-word !important;
+
+    overflow-wrap: break-word !important;
+
+    hyphens: auto !important;
+
+}
+
+
+
+.user-phone {
+
+    font-size: 0.85rem !important;
+
+    color: #6b7280 !important;
+
+    word-wrap: break-word !important;
+
+    overflow-wrap: break-word !important;
+
+}
+
+
+
+.user-email {
+
+    font-size: 0.75rem !important;
+
+    color: #9ca3af !important;
+
+    margin-top: 2px !important;
+
+    word-wrap: break-word !important;
+
+    overflow-wrap: break-word !important;
+
+    hyphens: auto !important;
+
+}
+
+
+
+.address-info {
+
+    font-size: 0.85rem !important;
+
+    color: #6b7280 !important;
+
+    margin-bottom: 12px !important;
+
+    word-wrap: break-word !important;
+
+    overflow-wrap: break-word !important;
+
+    hyphens: auto !important;
+
+    line-height: 1.3 !important;
+
+}
+
+
+
+/* Mobile responsive fixes */
+@media (max-width: 640px) {
+    
+    .order-card {
+        height: auto !important;
+        min-height: 480px !important;
+    }
+    
+    .user-info {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+    }
+    
+    .user-info > div {
+        width: 100% !important;
+    }
+    
+    .user-name {
+        font-size: 0.9rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .user-phone {
+        font-size: 0.8rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .user-email {
+        font-size: 0.75rem !important;
+        line-height: 1.2 !important;
+        word-break: break-all !important;
+    }
+    
+    .address-info {
+        font-size: 0.8rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .price-tag {
+        font-size: 1.2rem !important;
+    }
+    
+    .price-tag div {
+        font-size: 0.8rem !important;
+    }
+}
+
+
+/* View Items Button */
+
+.view-items-btn {
+
+    width: 100% !important;
+
+    padding: 12px !important;
+
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+
+    color: white !important;
+
+    border: none !important;
+
+    border-radius: 10px !important;
+
+    font-weight: 600 !important;
+
+    font-size: 0.9rem !important;
+
+    cursor: pointer !important;
+
+    transition: all 0.3s ease !important;
+
+    margin: 8px 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    gap: 8px !important;
+
+}
+
+
+
+.view-items-btn:hover {
+
+    transform: translateY(-2px) !important;
+
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+
+}
+
+
+
+.view-items-btn:active {
+
+    transform: translateY(0) !important;
+
+}
+
+
+
+/* Order items section */
+
+.card-body {
+
+    flex-grow: 1 !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+
+}
+
+
+
+.order-items {
+
+    max-height: 110px !important;
+
+    min-height: 70px !important;
+
+    overflow-y: auto !important;
+
+    background: #f8fafc !important;
+
+    padding: 12px !important;
+
+    border-radius: 12px !important;
+
+    margin: 15px 0 !important;
+
+    border: 1px solid #f1f5f9 !important;
+
+}
+
+
+
+/* Custom scrollbar for items */
+
+.order-items::-webkit-scrollbar {
+
+    width: 4px;
+
+}
+
+
+
+.order-items::-webkit-scrollbar-thumb {
+
+    background: #d1d5db;
+
+    border-radius: 10px;
+
+}
+
+
+
+.item-line { 
+
+    display: flex; 
+
+    justify-content: space-between; 
+
+    font-size: 0.85rem; 
+
+    margin-bottom: 6px !important;
+
+    color: #334155 !important;
+
+}
+
+
+
+/* Price section */
+
+.price-tag{
+
+    margin-top: auto !important;
+
+    padding-top: 5px !important;
+
+    font-size: 1.4rem !important;
+
+    font-weight: 800 !important;
+
+    color: #059669 !important;
+
+    text-align: left !important;
+
+    border-top: 1px dashed #e2e8f0 !important;
+
+}
+
+
+
+.payment-method {
+
+    font-size: 0.75rem !important;
+
+    color: #64748b !important;
+
+    font-weight: 600 !important;
+
+}
+
+
+
+/* Order card actions */
+
+.card-actions {
+
+    margin-top: 15px !important;
+
+    display: flex !important;
+
+    gap: 12px !important;
+
+    width: 100% !important;
+
+    justify-content: center !important;
+
+}
+
+
+
+.card-actions button {
+
+    flex: 1 1 0% !important;
+
+    min-width: 0 !important;
+
+    padding: 12px 5px !important;
+
+    border-radius: 10px !important;
+
+    font-weight: 700 !important;
+
+    font-size: 0.85rem !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    gap: 6px !important;
+
+}
+
+
+
+/* Single button styling */
+
+.card-actions button:only-child {
+
+    flex: 0 1 auto !important;
+
+    width: 100% !important; 
+
+    max-width: 220px !important;
+
+    margin: 0 auto !important;
+
+}
+
+
+
+/* Mobile card adjustments */
+
+@media (max-width: 480px) {
+
+    .card-actions { 
+        flex-direction: row !important; 
+        gap: 8px !important;
+        justify-content: space-between !important;
+    }
+
+    .btn { 
+        width: auto !important;
+        flex: 1 1 50% !important;
+    }
+
+}
+
+
+
+/* Button base styling */
+
+.btn {
+
+    border-radius: 10px !important;
+
+    padding: 10px !important;
+
+    font-size: 0.9rem !important;
+
+    text-transform: none !important;
+
+    transition: all 0.3s ease !important;
+
+    border: none;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    display: flex; 
+
+    justify-content: center; 
+
+    align-items: center; 
+
+    gap: 6px;
+
+}
+
+
+
+/* Button variants */
+
+.btn-accept { 
+
+    background: #10b981 !important; 
+
+    color: white !important;
+
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
+
+}
+
+
+
+.btn-reject { 
+
+    background: #ffffff !important; 
+
+    color: #ef4444 !important; 
+
+    border: 1px solid #fee2e2 !important;
+
+}
+
+
+
+.btn-delete { 
+
+    background: #e5e7eb; 
+
+    color: #4b5563; 
+
+}
+
+
+
+/* ========================================
+
+   8. MENU SECTION
+
+   ======================================== */
+
+   /* Menu management table aur accordion */
+
+
+
+/* Accordion bars styling */
+
+#menuSection .bg-white.rounded-xl {
+
+    width: 100% !important;
+
+    margin-bottom: 20px !important;
+
+    border: 1px solid #e5e7eb !important;
+
+    transition: all 0.3s ease;
+
+}
+
+
+
+#menuSection button[onclick^="toggleAccordion"] {
+
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    align-items: center !important;
+
+    padding: 20px 25px !important;
+
+    width: 100% !important;
+
+    text-align: left;
+
+    background: #ffffff !important;
+
+}
+
+
+
+#menuSection button[onclick^="toggleAccordion"]:hover {
+
+    background: #f9fafb !important;
+
+}
+
+
+
+/* Accordion arrow styling */
+
+#menuSection .fa-chevron-down {
+
+    font-size: 1.1rem !important;
+
+    color: #6b7280 !important;
+
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+    background: #f3f4f6;
+
+    padding: 8px;
+
+    border-radius: 50%;
+
+}
+
+
+
+.rotate-180 {
+
+    transform: rotate(180deg) !important;
+
+    background: #111827 !important;
+
+    color: #ffffff !important;
+
+}
+
+
+
+/* Table container styling */
+
+.card-bg {
+
+    background: white;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+}
+
+
+
+.table-wrapper {
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+}
+
+
+
+/* Table base styling */
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 600px;
+
+}
+
+
+
+th, td {
+
+    text-align: left;
+
+    padding: 12px;
+
+    border-bottom: 1px solid #f3f4f6;
+
+    font-size: 0.9rem;
+
+}
+
+
+
+/* Attractive table container */
+
+#inventoryCollapse .overflow-x-auto {
+
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+    margin-top: 10px;
+
+}
+
+
+
+/* Menu table cells styling */
+
+#adminMenuList tr td {
+
+    padding: 18px 20px !important;
+
+    vertical-align: middle;
+
+}
+
+
+
+/* Input fields in menu table */
+
+#adminMenuList input[type="text"][placeholder*="Image"] {
+
+    max-width: 300px !important;
+
+    font-size: 0.85rem !important;
+
+    padding: 10px 14px !important;
+
+}
+
+
+
+/* Upload button styling */
+
+#adminMenuList input[type="file"] + button,
+
+#adminMenuList button[onclick*="upload"] {
+
+    padding: 8px 16px !important;
+
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+
+    color: white !important;
+
+    border: none !important;
+
+    border-radius: 8px !important;
+
+    font-weight: 600 !important;
+
+    font-size: 0.8rem !important;
+
+    cursor: pointer !important;
+
+    transition: all 0.3s ease !important;
+
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+
+}
+
+
+
+#adminMenuList button[onclick*="upload"]:hover {
+
+    transform: translateY(-2px) !important;
+
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+
+}
+
+
+
+/* Update button styling */
+
+#adminMenuList td:last-child button {
+
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%) !important;
+
+    color: white !important;
+
+    border: none !important;
+
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+
+}
+
+
+
+#adminMenuList td:last-child button:hover {
+
+    background: linear-gradient(135deg, #374151 0%, #4b5563 100%) !important;
+
+    transform: translateY(-1px) !important;
+
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+
+}
+
+
+
+/* View link styling */
+
+#adminMenuList a {
+
+    color: #c5a059 !important;
+
+    text-decoration: none !important;
+
+    font-weight: 600 !important;
+
+    font-size: 0.8rem !important;
+
+    padding: 4px 8px !important;
+
+    border-radius: 4px !important;
+
+    transition: all 0.2s ease !important;
+
+}
+
+
+
+#adminMenuList a:hover {
+
+    background: #fef3c7 !important;
+
+    color: #92400e !important;
+
+}
+
+
+
+/* ========================================
+
+   9. CATEGORIES SECTION
+
+   ======================================== */
+
+   /* Category tags aur filters */
+
+
+
+/* Category tags grid */
+
+#adminCategoryList {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 8px;
+
+    margin-top: 10px;
+
+}
+
+
+
+#adminCategoryList > div {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+}
+
+
+
+/* Mobile mein 2 columns */
+
+@media (max-width: 640px) {
+
+    #adminCategoryList {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+}
+
+
+
+/* ========================================
+
+   10. RESPONSIVE DESIGN
+
+   ======================================== */
+
+   /* Sabhi screen sizes ke liye adjustments */
+
+
+
+/* Extra Small Devices (320px - 480px) */
+
+@media (max-width: 480px) {
+
+    .sidebar {
+
+        width: 100% !important;
+
+        height: 100vh !important;
+
+        border-radius: 0 !important;
+
+        border-right: none !important;
+
+    }
+
+    
+
+    .sidebar-header {
+
+        padding: 1rem !important;
+
+    }
+
+    
+
+    .sidebar-header span {
+
+        font-size: 1.2rem !important;
+
+    }
+
+    
+
+    .nav-link {
+
+        margin: 2px 8px !important;
+
+        padding: 10px 12px !important;
+
+        font-size: 0.9rem !important;
+
+    }
+
+    
+
+    .nav-link i {
+
+        font-size: 1rem !important;
+
+        width: 20px !important;
+
+    }
+
+    
+
+    .main-content {
+
+        padding: 1rem !important;
+
+        padding-bottom: 100px !important;
+
+    }
+
+    
+
+    .bottom-nav-mobile {
+
+        width: 95% !important;
+
+        height: 60px !important;
+
+        bottom: 15px !important;
+
+        border-radius: 20px !important;
+
+        padding: 0 10px !important;
+
+    }
+
+    
+
+    .bottom-nav-mobile button i {
+
+        font-size: 0.9rem !important;
+
+    }
+
+    
+
+    .bottom-nav-mobile span {
+
+        font-size: 0.55rem !important;
+
+    }
+
+}
+
+
+
+/* Small Devices (481px - 768px) */
+
+@media (min-width: 481px) and (max-width: 768px) {
+
+    .sidebar {
+
+        width: 280px !important;
+
+    }
+
+    
+
+    .main-content {
+
+        padding: 1.5rem !important;
+
+        padding-bottom: 100px !important;
+
+    }
+
+    
+
+    .bottom-nav-mobile {
+
+        width: 92% !important;
+
+        height: 65px !important;
+
+    }
+
+}
+
+
+
+/* Medium Devices (769px - 1024px) */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    .sidebar {
+
+        width: 240px !important;
+
+    }
+
+    
+
+    .sidebar-header {
+
+        padding: 1.5rem !important;
+
+    }
+
+    
+
+    .sidebar-header span {
+
+        font-size: 1.1rem !important;
+
+    }
+
+    
+
+    .main-content {
+
+        padding: 2rem !important;
+
+        margin-left: 240px !important;
+
+    }
+
+}
+
+
+
+/* Large Devices (1025px - 1440px) */
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+
+    .sidebar {
+
+        width: 260px !important;
+
+    }
+
+    
+
+    .main-content {
+
+        padding: 2.5rem !important;
+
+        margin-left: 260px !important;
+
+    }
+
+}
+
+
+
+/* Extra Large Devices (1441px+) */
+
+@media (min-width: 1441px) {
+
+    .sidebar {
+
+        width: 280px !important;
+
+    }
+
+    
+
+    .main-content {
+
+        padding: 3rem !important;
+
+        margin-left: 280px !important;
+
+        max-width: 1400px !important;
+
+    }
+
+}
+
+
+
+/* ========================================
+
+   11. MOBILE SPECIFIC FIXES
+
+   ======================================== */
+
+   /* Mobile devices ke liye special fixes */
+
+
+
+/* Content padding fix for bottom nav */
+
+@media (max-width: 768px) {
+
+    .main-content {
+
+        padding-bottom: 100px !important;
+
+    }
+
+
+
+    /* ========================================
+
+       11. MOBILE SPECIFIC FIXES
+
+       ======================================== */
+
+       /* Mobile devices ke liye special fixes */
+
+
+
+    /* Content padding fix for bottom nav */
+
+    @media (max-width: 768px) {
+
+        .main-content {
+
+            padding-bottom: 100px !important;
+
+        }
+
+    }
+
+
+
+    /* Menu section mobile fixes */
+
+    .bg-white.p-6.rounded-xl.shadow-md {
+
+        overflow: hidden;
+
+    }
+
+    .bg-white.p-6.rounded-xl.shadow-md .flex.gap-2 {
+
+        flex-direction: column !important;
+
+        gap: 12px;
+
+/* Input fields full width on mobile */
+
+#newCatName, #deleteItemId, 
+
+.bg-white.p-6.rounded-xl.shadow-md button {
+
+    width: 100% !important;
+
+    margin-right: 0;
+
+}
+
+
+
+/* Mobile table scroll fix */
+@media (max-width: 768px) {
+    /* Menu Section Container */
+    #menuSection {
+        padding: 10px !important;
+    }
+
+    /* Accordion Bars Mobile */
+    #menuSection .bg-white.rounded-xl {
+        margin-bottom: 15px !important;
+        border-radius: 10px !important;
+    }
+
+    #menuSection button[onclick^="toggleAccordion"] {
+        padding: 15px 20px !important;
+        font-size: 0.9rem !important;
+    }
+
+    #menuSection .fa-chevron-down {
+        font-size: 1rem !important;
+        padding: 6px !important;
+    }
+
+    /* Table Container Mobile */
+    .card-bg {
+        padding: 10px !important;
+        border-radius: 10px !important;
+        overflow-x: auto !important;
+    }
+
+    /* Menu Table Mobile */
+    #adminMenuList {
+        font-size: 0.85rem !important;
+        min-width: 600px !important;
+    }
+
+    #adminMenuList tr td {
+        padding: 12px 15px !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* Input Fields Mobile */
+    #adminMenuList input[type="text"][placeholder*="Image"] {
+        max-width: 200px !important;
+        font-size: 0.8rem !important;
+        padding: 8px 12px !important;
+    }
+
+    #adminMenuList input[type="text"] {
+        font-size: 0.8rem !important;
+        padding: 8px 12px !important;
+    }
+
+    /* Buttons Mobile */
+    #adminMenuList input[type="file"] + button,
+    #adminMenuList button[onclick*="upload"] {
+        padding: 6px 12px !important;
+        font-size: 0.75rem !important;
+        border-radius: 6px !important;
+    }
+
+    #adminMenuList td:last-child button {
+        padding: 6px 12px !important;
+        font-size: 0.75rem !important;
+        border-radius: 6px !important;
+    }
+
+    /* View Links Mobile */
+    #adminMenuList a {
+        font-size: 0.8rem !important;
+        padding: 4px 8px !important;
+    }
+}
+
+/* Extra Small Mobile (≤480px) */
+@media (max-width: 480px) {
+    #menuSection {
+        padding: 8px !important;
+    }
+
+    #menuSection .bg-white.rounded-xl {
+        margin-bottom: 12px !important;
+        border-radius: 8px !important;
+    }
+
+    #menuSection button[onclick^="toggleAccordion"] {
+        padding: 12px 15px !important;
+        font-size: 0.85rem !important;
+    }
+
+    #menuSection .fa-chevron-down {
+        font-size: 0.9rem !important;
+        padding: 5px !important;
+    }
+
+    .card-bg {
+        padding: 8px !important;
+        border-radius: 8px !important;
+    }
+
+    #adminMenuList {
+        font-size: 0.8rem !important;
+        min-width: 500px !important;
+    }
+
+    #adminMenuList tr td {
+        padding: 10px 12px !important;
+        font-size: 0.75rem !important;
+    }
+
+    #adminMenuList input[type="text"][placeholder*="Image"] {
+        max-width: 150px !important;
+        font-size: 0.75rem !important;
+        padding: 6px 10px !important;
+    }
+
+    #adminMenuList input[type="text"] {
+        font-size: 0.75rem !important;
+        padding: 6px 10px !important;
+    }
+
+    #adminMenuList input[type="file"] + button,
+    #adminMenuList button[onclick*="upload"] {
+        padding: 5px 10px !important;
+        font-size: 0.7rem !important;
+        border-radius: 5px !important;
+    }
+
+    #adminMenuList td:last-child button {
+        padding: 5px 10px !important;
+        font-size: 0.7rem !important;
+        border-radius: 5px !important;
+    }
+
+    #adminMenuList a {
+        font-size: 0.75rem !important;
+        padding: 3px 6px !important;
+    }
+}
+
+/* Ultra Small Mobile (≤360px) */
+@media (max-width: 360px) {
+    #menuSection {
+        padding: 6px !important;
+    }
+
+    #menuSection .bg-white.rounded-xl {
+        margin-bottom: 10px !important;
+        border-radius: 6px !important;
+    }
+
+    #menuSection button[onclick^="toggleAccordion"] {
+        padding: 10px 12px !important;
+        font-size: 0.8rem !important;
+    }
+
+    #menuSection .fa-chevron-down {
+        font-size: 0.8rem !important;
+        padding: 4px !important;
+    }
+
+    .card-bg {
+        padding: 6px !important;
+        border-radius: 6px !important;
+    }
+
+    #adminMenuList {
+        font-size: 0.75rem !important;
+        min-width: 400px !important;
+    }
+
+    #adminMenuList tr td {
+        padding: 8px 10px !important;
+        font-size: 0.7rem !important;
+    }
+
+    #adminMenuList input[type="text"][placeholder*="Image"] {
+        max-width: 120px !important;
+        font-size: 0.7rem !important;
+        padding: 5px 8px !important;
+    }
+
+    #adminMenuList input[type="text"] {
+        font-size: 0.7rem !important;
+        padding: 5px 8px !important;
+    }
+
+    #adminMenuList input[type="file"] + button,
+    #adminMenuList button[onclick*="upload"] {
+        padding: 4px 8px !important;
+        font-size: 0.65rem !important;
+        border-radius: 4px !important;
+    }
+
+    #adminMenuList td:last-child button {
+        padding: 4px 8px !important;
+        font-size: 0.65rem !important;
+        border-radius: 4px !important;
+    }
+
+    #adminMenuList a {
+        font-size: 0.7rem !important;
+        padding: 2px 5px !important;
+    }
+}
+
+@media (max-width: 768px) {
+
+    #inventoryCollapse .overflow-x-auto {
+
+        overflow-x: auto !important;
+
+        -webkit-overflow-scrolling: touch !important;
+
+        margin: 0 -10px !important;
+
+        padding: 0 10px !important;
+
+        background: #f8fafc !important;
+
+        border-radius: 12px !important;
+
+    }
+
+
+
+    #adminTableMain {
+
+        min-width: 800px !important;
+
+        width: 100% !important;
+
+        background: white !important;
+
+        border-radius: 12px !important;
+
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+
+        overflow: hidden !important;
+
+    }
+
+
+
+    #adminTableMain thead {
+
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+
+        position: sticky !important;
+
+        top: 0 !important;
+
+        z-index: 10 !important;
+
+    }
+
+
+
+    #adminTableMain th {
+
+        padding: 12px 8px !important;
+
+        font-size: 0.75rem !important;
+
+        font-weight: 700 !important;
+
+        color: #374151 !important;
+
+        position: relative !important;
+
+        top: 0 !important;
+
+        z-index: 10 !important;
+
+    }
+
+}
+
+
+
+/* ========================================
+
+   12. SCROLLBAR STYLING
+
+   ======================================== */
+
+   /* Custom scrollbars for better look */
+
+
+
+/* Mobile table scrollbar */
+
+@media (max-width: 768px) {
+
+    #inventoryCollapse .overflow-x-auto::-webkit-scrollbar {
+
+        height: 6px !important;
+
+    }
+
+
+
+    #inventoryCollapse .overflow-x-auto::-webkit-scrollbar-track {
+
+        background: #f1f5f9 !important;
+
+        border-radius: 3px !important;
+
+    }
+
+
+
+    #inventoryCollapse .overflow-x-auto::-webkit-scrollbar-thumb {
+
+        background: #cbd5e1 !important;
+
+        border-radius: 3px !important;
+
+    }
+
+
+
+    #inventoryCollapse .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+
+        background: #94a3b8 !important;
+
+    }
+
+}
+
+
+
+/* ========================================
+
+   13. DESKTOP SPECIFIC FIXES
+
+   ======================================== */
+
+   /* Desktop devices ke liye special fixes */
+
+
+
+/* Clear All button desktop fix */
+
+@media (min-width: 768px) {
+
+    .flex.items-center.gap-3.w-full.md\:w-auto {
+
+        display: flex !important;
+
+        flex-wrap: nowrap !important;
+
+        justify-content: flex-end !important;
+
+        min-width: 400px;
+
+    }
+
+
+
+    button[onclick="deleteAllOrders()"] {
+        flex-shrink: 0 !important;
+        width: auto !important;
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1) !important;
+        position: relative !important;
+        z-index: 10000 !important;
+    }
+
+    button[onclick="deleteAllOrders()"]:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15) !important;
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    }
+
+    button[onclick="deleteAllOrders()"] span {
+
+        display: inline !important;
+
+    }
+
+
+
+    .md\:w-80 {
+
+        width: 20rem !important;
+
+    }
+
+}
+
+
+
+/* ========================================
+
+   14. UTILITY CLASSES
+
+   ======================================== */
+
+   /* Common utility classes aur helpers */
+
+
+
+/* Flex containers mobile fix */
+
+.bg-white .flex.gap-2 {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+
+@media (min-width: 640px) {
+
+    .bg-white .flex.gap-2 {
+
+        flex-direction: row;
+
+    }
+
+    
+
+    .bg-white .flex.gap-2 input {
+
+        flex: 1;
+
+    }
+
+}
+
+
+
+/* Buttons full width on mobile */
+
+.bg-white button {
+
+    width: 100%;
+
+    white-space: nowrap;
+
+}
+
+
+
+@media (min-width: 640px) {
+
+    .bg-white button {
+
+        width: auto;
+
+    }
+
+}
+
+
+
+/* Overflow containers */
+
+.overflow-x-auto {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+}
+
+
+
+/* Input fields full width */
+
+input[type="text"], 
+
+input[type="number"], 
+
+select {
+
+    width: 100% !important;
+
+    box-sizing: border-box;
+
+}
+
+
+
+/* ========================================
+
+   END OF admin-style.css
+
+   ======================================== */
+
+
+
+/* ========================================
+
+   15. ITEMS POPUP MODAL
+
+   ======================================== */
+
+
+
+/* Popup Overlay */
+
+.items-popup-overlay {
+
+    position: fixed !important;
+
+    top: 0 !important;
+
+    left: 0 !important;
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+    background: rgba(0, 0, 0, 0.6) !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    z-index: 9999 !important;
+
+    backdrop-filter: blur(4px) !important;
+
+    animation: fadeIn 0.3s ease !important;
+
+}
+
+
+
+/* Popup Modal */
+
+.items-popup-modal {
+
+    background: white !important;
+
+    border-radius: 16px !important;
+
+    width: 90% !important;
+
+    max-width: 500px !important;
+
+    max-height: 80vh !important;
+
+    overflow: hidden !important;
+
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25) !important;
+
+    animation: slideUp 0.3s ease !important;
+
+}
+
+
+
+/* Popup Header */
+
+.popup-header {
+
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+
+    color: white !important;
+
+    padding: 20px !important;
+
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    align-items: center !important;
+
+}
+
+
+
+.popup-header h3 {
+
+    margin: 0 !important;
+
+    font-size: 1.2rem !important;
+
+    font-weight: 600 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 10px !important;
+
+}
+
+
+
+.popup-close {
+
+    background: rgba(255, 255, 255, 0.2) !important;
+
+    border: none !important;
+
+    color: white !important;
+
+    width: 32px !important;
+
+    height: 32px !important;
+
+    border-radius: 50% !important;
+
+    cursor: pointer !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    transition: background 0.3s ease !important;
+
+}
+
+
+
+.popup-close:hover {
+
+    background: rgba(255, 255, 255, 0.3) !important;
+
+}
+
+
+
+/* Popup Body */
+
+.popup-body {
+
+    padding: 20px !important;
+
+    max-height: calc(80vh - 80px) !important;
+
+    overflow-y: auto !important;
+
+}
+
+
+
+/* Order Info Section */
+
+.popup-order-info {
+
+    background: #f8fafc !important;
+
+    padding: 15px !important;
+
+    border-radius: 10px !important;
+
+    margin-bottom: 20px !important;
+
+    border: 1px solid #e2e8f0 !important;
+
+}
+
+
+
+.info-row {
+
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    margin-bottom: 8px !important;
+
+    font-size: 0.9rem !important;
+
+}
+
+
+
+.info-row:last-child {
+
+    margin-bottom: 0 !important;
+
+}
+
+
+
+.info-label {
+
+    font-weight: 600 !important;
+
+    color: #64748b !important;
+
+}
+
+
+
+.info-value {
+
+    font-weight: 500 !important;
+
+    color: #1e293b !important;
+
+    text-align: right !important;
+
+    max-width: 60% !important;
+
+    word-wrap: break-word !important;
+
+}
+
+
+
+/* Items Container */
+
+.popup-items-container {
+
+    margin-bottom: 20px !important;
+
+}
+
+
+
+.popup-item-line {
+
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    align-items: center !important;
+
+    padding: 12px !important;
+
+    background: #f9fafb !important;
+
+    border-radius: 8px !important;
+
+    margin-bottom: 8px !important;
+
+    border: 1px solid #f3f4f6 !important;
+
+    transition: all 0.2s ease !important;
+
+}
+
+
+
+.popup-item-line:hover {
+
+    background: #f3f4f6 !important;
+
+    transform: translateX(4px) !important;
+
+}
+
+
+
+.item-info {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 12px !important;
+
+    flex: 1 !important;
+
+}
+
+
+
+.item-qty {
+
+    background: #667eea !important;
+
+    color: white !important;
+
+    padding: 4px 8px !important;
+
+    border-radius: 6px !important;
+
+    font-size: 0.8rem !important;
+
+    font-weight: 600 !important;
+
+    min-width: 40px !important;
+
+    text-align: center !important;
+
+}
+
+
+
+.item-name {
+
+    font-weight: 500 !important;
+
+    color: #374151 !important;
+
+    font-size: 0.95rem !important;
+
+}
+
+
+
+.item-price {
+
+    font-weight: 700 !important;
+
+    color: #059669 !important;
+
+    font-size: 1rem !important;
+
+}
+
+
+
+/* Total Section */
+
+.popup-total {
+
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+
+    padding: 15px !important;
+
+    border-radius: 10px !important;
+
+    border: 2px solid #86efac !important;
+
+}
+
+
+
+.total-row {
+
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    align-items: center !important;
+
+}
+
+
+
+.total-label {
+
+    font-weight: 600 !important;
+
+    color: #166534 !important;
+
+    font-size: 1rem !important;
+
+}
+
+
+
+.total-value {
+
+    font-weight: 800 !important;
+
+    color: #15803d !important;
+
+    font-size: 1.3rem !important;
+
+}
+
+
+
+/* Animations */
+
+@keyframes fadeIn {
+
+    from { opacity: 0; }
+
+    to { opacity: 1; }
+
+}
+
+
+
+@keyframes slideUp {
+
+    from { 
+
+        opacity: 0;
+
+        transform: translateY(30px) scale(0.95);
+
+    }
+
+    to { 
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+
+
+/* Mobile Responsive */
+
+@media (max-width: 640px) {
+
+    .items-popup-modal {
+
+        width: 95% !important;
+
+        max-width: none !important;
+
+        max-height: 90vh !important;
+
+        margin: 10px !important;
+
+    }
+
+    .popup-header {
+
+        padding: 15px !important;
+
+    }
+
+    .popup-header h3 {
+
+        font-size: 1.1rem !important;
+
+    }
+
+    .popup-body {
+
+        padding: 15px !important;
+
+    }
+
+    
+
+    .info-row {
+
+        font-size: 0.85rem !important;
+
+    }
+
+    
+
+    .item-info {
+
+        gap: 8px !important;
+
+    }
+
+    
+
+    .popup-item-line {
+
+        padding: 10px !important;
+
+    }
+
+    
+
+    .total-value {
+
+        font-size: 1.1rem !important;
+
+    }
+
+}
+
+/* ========================================
+   UNIVERSAL MOBILE OPTIMIZATION (All Sizes)
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* 1. Universal Card Scaling */
+    .order-card {
+        height: auto !important;          /* Remove fixed height for all mobile sizes */
+        min-height: 100px !important;     /* Minimum footprint */
+        padding: 4% !important;           /* Responsive padding based on screen width */
+        width: 100% !important;
+        box-sizing: border-box !important;
+        position: relative !important;   /* Required for absolute positioning of status pill */
+    }
+
+    /* 2. Side-by-Side Button Logic (Accept & Reject) */
+    .card-actions {
+        display: flex !important;
+        flex-direction: row !important;   /* Force horizontal layout */
+        flex-wrap: nowrap !important;     /* Prevent wrapping to new line */
+        gap: 8px !important;              /* Tight spacing for smaller screens */
+        width: 100% !important;
+        justify-content: space-between !important;
+    }
+
+    .card-actions .btn {
+        flex: 1 1 50% !important;         /* Each button takes exactly half of space */
+        min-width: 0 !important;          /* Critical: allows button to shrink below content size */
+        padding: 10px 4px !important;
+        font-size: clamp(0.7rem, 2.5vw, 0.85rem) !important; /* Dynamic font size */
+        white-space: nowrap !important;   /* Keep text on one line */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    /* 3. Text & Header Scaling */
+    .order-id {
+        font-size: clamp(0.7rem, 3vw, 0.85rem) !important;
+        word-break: break-all !important; /* Prevents overflow on very narrow screens */
+    }
+
+    .user-name {
+        font-size: 0.95rem !important;
+    }
+
+    .price-tag {
+        font-size: 1.25rem !important;
+        margin-top: 8px !important;
+    }
+
+    /* 4. Status Pill Top Right Corner */
+    .status-pill {
+        position: absolute !important;
+        top: 10px !important;
+        right: 10px !important;
+        font-size: 0.6rem !important;
+        padding: 3px 8px !important;
+        border-radius: 8px !important;
+        z-index: 10 !important;
+    }
+
+}
+
+/* Specific Tweak for extra small screens (e.g., Galaxy Fold outer screen) */
+@media (max-width: 320px) {
+    .card-actions {
+        gap: 4px !important;
+    }
+    .card-actions .btn {
+        padding: 8px 2px !important;
+        font-size: 0.65rem !important;
+    }
+}
+
+/* Menu section icons positioning */
+#menuSection h3 {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+#menuSection h3 i {
+    position: static !important;
+    margin-right: 8px !important;
+    font-size: 1.2rem !important;
+}
+
+/* ========================================
+   11. SCROLL FIXES
+   ======================================== */
+
+/* Fix scroll issues on mobile */
+html, body {
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+}
+
+/* Ensure proper scrolling in main content */
+.main-content {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* Fix scroll in table containers */
+.table-wrapper,
+.overflow-x-auto {
+    -webkit-overflow-scrolling: touch !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+}
+
+/* Prevent scroll interference from fixed elements */
+.sidebar,
+.bottom-nav-mobile,
+#adminLoginOverlay {
+    -webkit-overflow-scrolling: auto !important;
+}
+
+/* Ensure smooth scrolling */
+* {
+    scroll-behavior: smooth !important;
+}
+
+/* Fix mobile scroll bounce */
+@media (max-width: 768px) {
+    body {
+        position: relative !important;
+        min-height: 100vh !important;
+    }
+    
+    .main-content {
+        position: relative !important;
+        overflow-y: visible !important;
+    }
+}
