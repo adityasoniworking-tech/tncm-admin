@@ -3,7 +3,7 @@ const SESSION_KEY = "isAdminLoggedIn";
 
 // Handle initial UI state based on login status
 window.onload = function () {
-    const isLoggedIn = localStorage.getItem(SESSION_KEY) === "true";
+    const isLoggedIn = sessionStorage.getItem(SESSION_KEY) === "true";
     const overlay = document.getElementById("adminLoginOverlay");
     const appContainer = document.querySelector(".app-container");
     const bottomNav = document.querySelector(".bottom-nav-mobile");
@@ -43,7 +43,7 @@ async function checkAdminLogin() {
                 if (appContainer) appContainer.style.display = 'flex';
                 if (bottomNav) bottomNav.style.display = '';
 
-                localStorage.setItem(SESSION_KEY, "true");
+                sessionStorage.setItem(SESSION_KEY, "true");
                 startOrderListener();
             } else {
                 errorMsg.innerText = "Invalid Username or Password!";
@@ -59,7 +59,7 @@ async function checkAdminLogin() {
 }
 
 function logoutAdmin() {
-    localStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(SESSION_KEY);
     window.location.reload();
 }
 

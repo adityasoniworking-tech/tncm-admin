@@ -38,7 +38,16 @@ class PWAUpdateManager {
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                             console.log('[PWA Update] New service worker installed');
-                            this.showUpdateAvailable();
+                            
+                            // Fetch actual version from version.json
+                            fetch('version.json')
+                                .then(response => response.json())
+                                .then(data => {
+                                    this.showUpdateAvailable(data.version);
+                                })
+                                .catch(() => {
+                                    this.showUpdateAvailable('New');
+                                });
                         }
                     });
                 });
