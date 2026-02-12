@@ -1,13 +1,18 @@
 {
   "name": "tncm-admin-portal",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "TNCM Bakery Admin Portal",
   "main": "admin.html",
   "scripts": {
     "build-css": "tailwindcss -i ./CSS/input.css -o ./CSS/tailwind.css --watch",
     "build-prod": "tailwindcss -i ./CSS/input.css -o ./CSS/tailwind.css --minify"
   },
-  "keywords": ["bakery", "admin", "portal", "tailwind"],
+  "keywords": [
+    "bakery",
+    "admin",
+    "portal",
+    "tailwind"
+  ],
   "author": "TNCM",
   "license": "MIT",
   "devDependencies": {

@@ -1,14 +1,16 @@
 {
-  "version": "1.1.0",
-  "buildDate": "2025-02-11",
-  "description": "Admin Portal - thenuttychocomorsels with WhatsApp-style notifications",
+  "version": "1.2.0",
+  "buildDate": "2026-02-12",
+  "description": "Admin Portal - thenuttychocomorsels with Configurable Notifications",
   "features": [
     "Dashboard with live stats",
     "Order management",
     "Menu management",
     "Inventory tracking",
     "PWA support",
-    "Auto-update notifications",
+    "Configurable notification settings",
+    "Order loop sound",
+    "Custom cooldown timer",
     "WhatsApp-style order notifications",
     "Mobile-optimized notifications",
     "alert.mp3 notification sound",
@@ -17,12 +19,11 @@
     "System notification panel integration"
   ],
   "updates": [
-    "Added WhatsApp-style notification system",
-    "Mobile-optimized permission requests",
-    "alert.mp3 sound integration",
-    "Visual notification fallback for desktop",
-    "Automatic notification permission on page load",
-    "Mobile-specific notification handling",
-    "Fixed notification conflicts between systems"
+    "Added Notification Settings page",
+    "Implemented sound loop feature",
+    "Added configurable notification cooldown",
+    "Fixed back-to-back order notifications",
+    "Updated mobile meta tags",
+    "Fixed FCM token permission issue"
   ]
 }
