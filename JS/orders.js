@@ -7,21 +7,24 @@ function startOrderListener() {
     db.collection("orders").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
         lastSnapshot = snapshot;
         
-        // Live Notification & Sound Logic - DISABLED (using notification.js instead)
+        // ALWAYS NOTIFY LOCALLY AND VIA FCM
         if (!isInitialLoad) {
             snapshot.docChanges().forEach((change) => {
                 if (change.type === "added") {
                     const newOrder = change.doc.data();
                     if (newOrder.status === "Pending" || newOrder.status === "Payment Awaited") {
-                        // Old notification system disabled - using notification.js instead
-                        console.log('New order detected - handled by notification.js:', newOrder.userName);
-                        // orderAlarm.play().catch(err => console.log("Sound blocked. Click page once."));
-                        // if (Notification.permission === "granted") {
-                        //     new Notification("🚨 Naya Order Aaya Hai!", {
-                        //         body: `Customer: ${newOrder.userName || 'Guest'} | Total: ₹${newOrder.totalAmount}`,
-                        //         icon: 'icon.png' 
-                        //     });
-                        // }
+                        console.log('🔔 New order detected:', newOrder.userName);
+                        
+                        if (window.orderNotificationSystem.shouldNotifyOrder(newOrder)) {
+                            // 1. Play Sound
+                            window.orderNotificationSystem.playOrderSound();
+                            
+                            // 2. Show Visual Notification
+                            window.orderNotificationSystem.showOrderNotification(newOrder);
+                            
+                            // 3. Try Browser Notification (if supported/allowed)
+                            window.orderNotificationSystem.showBrowserNotification(newOrder);
+                        }
                     }
                 }
             });
@@ -117,23 +120,25 @@ function renderGridView(ordersData) {
 
         if (needsAction) {
             buttonsHtml = `
-                <button class="btn btn-accept" onclick="updateStatus('${order.id}', 'Accepted')"><i class="fa-solid fa-check"></i> Accept</button>
-                <button class="btn btn-reject" onclick="updateStatus('${order.id}', 'Rejected')"><i class="fa-solid fa-xmark"></i> Reject</button>
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <button class="btn btn-accept" onclick="updateStatus('${order.id}', 'Accepted')" style="flex: 1; height: 42px; display: flex; align-items: center; justify-content: center; gap: 6px;"><i class="fa-solid fa-check"></i> Accept</button>
+                    <button class="btn btn-reject" onclick="updateStatus('${order.id}', 'Rejected')" style="flex: 1; height: 42px; display: flex; align-items: center; justify-content: center; gap: 6px;"><i class="fa-solid fa-xmark"></i> Reject</button>
+                </div>
             `;
         } else if (isAccepted) {
             buttonsHtml = `
-                <button class="btn" style="background:#f59e0b; color:white;" onclick="updateStatus('${order.id}', 'Ready')">
+                <button class="btn" style="background:#f59e0b; color:white; width: 100%; height: 42px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="updateStatus('${order.id}', 'Ready')">
                     <i class="fa-solid fa-cookie-bite"></i> Mark Ready
                 </button>
             `;
         } else if (isReady) {
             buttonsHtml = `
-                <button class="btn" style="background:#10b981; color:white;" onclick="updateStatus('${order.id}', 'Delivered')">
+                <button class="btn" style="background:#10b981; color:white; width: 100%; height: 42px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="updateStatus('${order.id}', 'Delivered')">
                     <i class="fa-solid fa-truck"></i> Delivered
                 </button>
             `;
         } else {
-            buttonsHtml = `<button class="btn btn-delete" onclick="deleteOrder('${order.id}')"><i class="fa-solid fa-trash"></i> Archive</button>`;
+            buttonsHtml = `<button class="btn btn-delete" onclick="deleteOrder('${order.id}')" style="width: 100%; height: 42px; display: flex; align-items: center; justify-content: center; gap: 6px;"><i class="fa-solid fa-trash"></i> Archive</button>`;
         }
 
         list.innerHTML += `
@@ -156,12 +161,14 @@ function renderGridView(ordersData) {
                         <div style="font-size:0.9rem; color:#f59e0b; margin-bottom:4px;">Delivery: ₹${deliveryCharge.toFixed(2)}</div>
                         <div style="font-size:1.4rem; font-weight:800; color:#059669;">₹${order.totalAmount.toFixed(2)} <span style="font-size:0.7em; font-weight:600; color:#6b7280;">(${paymentTag})</span></div>
                     </div>
-                    <button class="map-location-btn" onclick="openCustomerMap('${order.lat || ''}', '${order.lng || ''}', '${order.address || ''}', '${order.userName || 'Customer'}')" style="width:100%; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white; border:none; border-radius:8px; padding:8px 12px; font-size:0.8rem; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:12px; transition:all 0.3s ease;" onmouseover="this.style.background='linear-gradient(135deg, #059669 0%, #047857 100%)'" onmouseout="this.style.background='linear-gradient(135deg, #10b981 0%, #059669 100%)'">
-                        <i class="fa-solid fa-map-location-dot"></i> View Location on Map
-                    </button>
-                    <button class="view-items-btn" onclick="showItemsPopup('${order.id}')" style="margin-bottom: 20px;">
-                        <i class="fa-solid fa-box-open"></i> View Items (${itemsCount})
-                    </button>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <button class="map-location-btn" onclick="openCustomerMap('${order.lat || ''}', '${order.lng || ''}', '${order.address || ''}', '${order.userName || 'Customer'}')" style="flex: 1 !important; height: 42px !important; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white; border:none; border-radius:8px; padding:0 12px; font-size:0.8rem; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all 0.3s ease; width: auto !important; margin: 0 !important;" onmouseover="this.style.background='linear-gradient(135deg, #059669 0%, #047857 100%)'" onmouseout="this.style.background='linear-gradient(135deg, #10b981 0%, #059669 100%)'">
+                            <i class="fa-solid fa-map-location-dot"></i> Map
+                        </button>
+                        <button class="view-items-btn" onclick="showItemsPopup('${order.id}')" style="flex: 1 !important; height: 42px !important; margin: 0 !important; display: flex; align-items: center; justify-content: center; gap: 6px; width: auto !important;">
+                            <i class="fa-solid fa-box-open"></i> Items (${itemsCount})
+                        </button>
+                    </div>
                 </div>
                 <div class="card-actions" style="margin-top: 0;">${buttonsHtml}</div>
             </div>`;
@@ -184,6 +191,12 @@ function renderGridView(ordersData) {
 function updateStatus(docId, status) { 
     let msg = status === "Rejected" ? "Are you sure you want to reject this order?" : `Set status to ${status}?`;
     if (status === "Accepted" || status === "Ready" || status === "Delivered" || confirm(msg)) {
+        
+        // Stop any active notification sound
+        if(window.orderNotificationSystem && window.orderNotificationSystem.stopOrderSound) {
+            window.orderNotificationSystem.stopOrderSound();
+        }
+
         db.collection("orders").doc(docId).update({ status: status })
         .then(() => {
             console.log(`Order ${docId} status set to ${status}`);
@@ -196,6 +209,12 @@ function updateStatus(docId, status) {
 
 function deleteOrder(docId) { 
     if(confirm("Are you sure you want to Archive/Delete this order?")) {
+        
+        // Stop any active notification sound
+        if(window.orderNotificationSystem && window.orderNotificationSystem.stopOrderSound) {
+            window.orderNotificationSystem.stopOrderSound();
+        }
+
         db.collection("orders").doc(docId).delete()
         .then(() => {
             alert("Order archived successfully.");
@@ -288,6 +307,11 @@ async function deleteAllOrders() {
 
 function showItemsPopup(orderId) {
     console.log('View Items clicked:', orderId);
+    
+    // Stop any active notification sound
+    if(window.orderNotificationSystem && window.orderNotificationSystem.stopOrderSound) {
+        window.orderNotificationSystem.stopOrderSound();
+    }
     
     const order = window.orderData[orderId];
     if (!order) {

@@ -1,8 +1,13 @@
-const CACHE_VERSION = '1.0.0';
+const CACHE_VERSION = '1.0.1';
 const CACHE_NAME = `tncm-admin-portal-v${CACHE_VERSION}`;
 const STATIC_CACHE_NAME = `tncm-admin-static-v${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `tncm-admin-dynamic-v${CACHE_VERSION}`;
 const UPDATE_CACHE_NAME = 'tncm-admin-update-cache';
+
+// Firebase Imports for FCM
+importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js');
+
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
@@ -115,69 +120,45 @@ self.addEventListener('fetch', (event) => {
       .then((cachedResponse) => {
         // Return cached version if available
         if (cachedResponse) {
-          // For static assets, serve from cache and update in background
+          // Background update for static assets
           if (STATIC_ASSETS.some(asset => request.url.includes(asset))) {
-            // Update cache in background
-            fetch(request)
-              .then((response) => {
-                if (response.ok) {
-                  const responseClone = response.clone();
-                  caches.open(STATIC_CACHE_NAME)
-                    .then((cache) => cache.put(request, responseClone));
+            fetch(request).then(response => {
+                if(response.ok) {
+                    caches.open(STATIC_CACHE_NAME).then(cache => cache.put(request, response.clone()));
                 }
-              })
-              .catch(() => {
-                console.log('[PWA SW] Background update failed, serving from cache');
-              });
-            return cachedResponse;
+            }).catch(() => {});
           }
           return cachedResponse;
         }
-        
-        // For HTML pages, try network first, then cache
-        if (request.headers.get('accept').includes('text/html')) {
-          return fetch(request)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              
-              // Cache successful responses
-              const responseClone = response.clone();
-              caches.open(DYNAMIC_CACHE_NAME)
-                .then((cache) => cache.put(request, responseClone));
-              
-              return response;
-            })
-            .catch(() => {
-              // Return offline fallback page
-              return caches.match('/index.html');
-            });
-        }
-        
-        // For other requests, try network then cache
-        return fetch(request)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
+
+        // If not in cache, fetch from network
+        return fetch(request).then(response => {
+            // Cache if successful and valid
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+                return response;
             }
-            
-            // Cache successful responses for dynamic content
-            if (request.url.includes('firestore') || 
+
+            // Cache dynamic content
+            if (request.headers.get('accept').includes('text/html') || 
+                request.url.includes('firestore') || 
                 request.url.includes('storage') ||
                 request.url.includes('.jpg') || 
                 request.url.includes('.png')) {
-              const responseClone = response.clone();
-              caches.open(DYNAMIC_CACHE_NAME)
-                .then((cache) => cache.put(request, responseClone));
+                const responseToCache = response.clone();
+                caches.open(DYNAMIC_CACHE_NAME).then(cache => {
+                    cache.put(request, responseToCache);
+                });
             }
-            
             return response;
-          })
-          .catch(() => {
-            // Try to serve from cache if network fails
-            return caches.match(request);
-          });
+        }).catch(() => {
+            // Network failed, try offline fallback
+            if (request.headers.get('accept').includes('text/html')) {
+                return caches.match('/index.html');
+            }
+            // For images/other assets, return nothing or placeholder
+        });
+        
+
       })
       .catch(() => {
         // Final fallback for critical resources
@@ -186,9 +167,12 @@ self.addEventListener('fetch', (event) => {
             headers: { 'Content-Type': 'text/css' }
           });
         }
-        return new Response('Offline - Please check your connection', { 
+        
+        // Return a basic offline response
+        return new Response('<h1>Offline</h1><p>Please check your connection.</p>', { 
           status: 503,
-          statusText: 'Service Unavailable'
+          statusText: 'Service Unavailable',
+          headers: { 'Content-Type': 'text/html' }
         });
       })
   );
@@ -220,44 +204,8 @@ async function syncOfflineOrders() {
   }
 }
 
-// Push notification handling
-self.addEventListener('push', (event) => {
-  console.log('[PWA SW] Push event received');
-  
-  if (!event.data) {
-    return;
-  }
-  
-  const options = {
-    body: event.data.text(),
-    icon: '/Assests/android-chrome-192x192.png',
-    badge: '/Assests/favicon-16x16.png',
-    vibrate: [100, 50, 100],
-    sound: '/alert.mp3',
-    requireInteraction: true,
-    silent: false,
-    data: {
-      dateOfArrival: Date.now(),
-      primaryKey: 1
-    },
-    actions: [
-      {
-        action: 'explore',
-        title: 'View Order',
-        icon: '/Assests/favicon-16x16.png'
-      },
-      {
-        action: 'close',
-        title: 'Close',
-        icon: '/Assests/favicon-16x16.png'
-      }
-    ]
-  };
-  
-  event.waitUntil(
-    self.registration.showNotification('New Order Received', options)
-  );
-});
+// [REMOVED] Raw push listener - Replaced by Firebase Messaging
+// self.addEventListener('push', (event) => { ... });
 
 // Notification click handling
 self.addEventListener('notificationclick', (event) => {
@@ -277,7 +225,8 @@ self.addEventListener('notificationclick', (event) => {
     event.waitUntil(
       clients.matchAll().then((clientList) => {
         for (const client of clientList) {
-          if (client.url === '/' && 'focus' in client) {
+          // Robust check for existing window
+          if (client.url && 'focus' in client) {
             return client.focus();
           }
         }
@@ -390,3 +339,69 @@ setInterval(() => {
 }, 30 * 60 * 1000);
 
 console.log('[PWA SW] Service Worker loaded successfully');
+
+// ========================================
+// FIREBASE CLOUD MESSAGING (FCM)
+// ========================================
+const firebaseConfig = {
+    apiKey: "AIzaSyC6Cr8OI7pjTt3t70hrjiSW7kWeZj4jHWc",
+    authDomain: "bakeryapp-c4812.firebaseapp.com",
+    projectId: "bakeryapp-c4812",
+    storageBucket: "bakeryapp-c4812.firebasestorage.app",
+    messagingSenderId: "547764804378",
+    appId: "1:547764804378:web:e4a425b9e13c826afaaaa3",
+    measurementId: "G-26NMR2HTWE"
+};
+
+try {
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    // Background Message Handler
+    messaging.onBackgroundMessage((payload) => {
+        console.log('📡 FCM Background Message (PWA SW):', payload);
+
+        const data = payload.data || {};
+        const notificationTitle = payload.notification?.title || data.title || '🍕 New Order!';
+        const notificationBody = payload.notification?.body || data.body || 'You have a new order';
+        const notificationIcon = payload.notification?.icon || data.icon || '/Assests/apple-touch-icon.png';
+        
+        // Show notification
+        const notificationOptions = {
+            body: notificationBody,
+            icon: notificationIcon,
+            badge: '/Assests/favicon-32x32.png',
+            tag: 'fcm-new-order',
+            requireInteraction: true,
+            vibrate: [200, 100, 200],
+            data: data,
+            actions: [
+                {
+                    action: 'open',
+                    title: 'View Order'
+                }
+            ]
+        };
+
+        if (self.registration && self.registration.showNotification) {
+            self.registration.showNotification(notificationTitle, notificationOptions);
+        }
+        
+        // Notify clients (open tabs) about message event
+        self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then(clients => {
+            clients.forEach(client => {
+                if (client.url && 'postMessage' in client) {
+                    client.postMessage({
+                        type: 'FCM_PUSH_NOTIFICATION',
+                        data: payload
+                    });
+                }
+            });
+        });
+    });
+    
+    console.log('[PWA SW] Firebase Messaging initialized');
+} catch (error) {
+    console.log('[PWA SW] Firebase init failed:', error);
+}

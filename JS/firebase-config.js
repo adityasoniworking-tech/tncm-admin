@@ -9,8 +9,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const storage = firebase.storage();
+const app = firebase.initializeApp(firebaseConfig);
+window.db = firebase.firestore(); // Make db global
+const messaging = firebase.messaging(); 
+
+// Make other services global if needed
+window.firebaseApp = app;
+window.messaging = messaging;
 
 console.log('Firebase Initialized Successfully');

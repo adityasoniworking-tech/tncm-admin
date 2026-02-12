@@ -10,6 +10,7 @@
     <link rel="manifest" href="Assests/site.webmanifest">
     <meta name="theme-color" content="#f59e0b">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Admin Portal">
     <meta name="application-name" content="Admin Portal">
@@ -31,6 +32,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
     <style>
         #adminLoginOverlay.custom-overlay {
@@ -88,6 +91,9 @@
                 </a>
                 <a href="#" onclick="setActiveNav(this); showSection('menu')" class="nav-link flex items-center gap-3">
                     <i class="fa-solid fa-layer-group"></i> <span>Manage Menu</span>
+                </a>
+                <a href="#" onclick="setActiveNav(this); showSection('settings')" class="nav-link flex items-center gap-3">
+                    <i class="fa-solid fa-gear"></i> <span>Settings</span>
                 </a>
             </nav>
 
@@ -358,6 +364,62 @@
 
 </div>
 
+            <div id="settingsSection" class="hidden max-w-[800px] mx-auto pb-24 animate-fadeIn">
+    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 p-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+            <i class="fa-solid fa-bell text-amber-500"></i> Notification Settings
+        </h2>
+        
+        <div class="space-y-8">
+            <!-- Sound Loop Setting -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-gray-100">
+                <div>
+                    <h3 class="font-bold text-gray-700 text-lg">Loop Notification Sound</h3>
+                    <p class="text-sm text-gray-500">Keep playing the ringtone until you interact with the page</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="settingLoopSound" class="sr-only peer">
+                    <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-amber-500"></div>
+                </label>
+            </div>
+
+            <!-- Loop Interval Setting -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-gray-100">
+                <div>
+                    <h3 class="font-bold text-gray-700 text-lg">Loop Interval</h3>
+                    <p class="text-sm text-gray-500">Time between sound repeats (seconds)</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="number" id="settingLoopInterval" min="1" max="60" value="5" class="w-24 p-2 border border-gray-300 rounded-lg text-center font-bold focus:ring-2 focus:ring-amber-400 outline-none">
+                    <span class="text-gray-500 font-medium">sec</span>
+                </div>
+            </div>
+
+            <!-- Notification Cooldown Setting -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-gray-100">
+                <div>
+                    <h3 class="font-bold text-gray-700 text-lg">Notification Cooldown</h3>
+                    <p class="text-sm text-gray-500">Minimum time between new order alerts (0 = Instant for all)</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="number" id="settingCooldown" min="0" max="120" value="0" class="w-24 p-2 border border-gray-300 rounded-lg text-center font-bold focus:ring-2 focus:ring-amber-400 outline-none">
+                    <span class="text-gray-500 font-medium">sec</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                <button onclick="window.orderNotificationSystem.playOrderSound()" class="px-6 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition flex items-center justify-center gap-2 flex-1">
+                    <i class="fa-solid fa-volume-high"></i> Test Sound
+                </button>
+                <button onclick="saveNotificationSettings()" class="px-6 py-3 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600 transition flex items-center justify-center gap-2 flex-[2] shadow-lg shadow-amber-500/30">
+                    <i class="fa-solid fa-save"></i> Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Hidden by default; shown only after successful admin login -->
     <div class="bottom-nav-mobile lg:hidden" style="background: linear-gradient(180deg, #111827 0%, #1f2937 100%) !important; display: none;">
     <button onclick="setMobileActive(this); showSection('dashboard')" class="active-mobile">
@@ -371,6 +433,10 @@
     <button onclick="setMobileActive(this); showSection('menu')">
         <i class="fa-solid fa-utensils"></i>
         <span>Menu</span>
+    </button>
+    <button onclick="setMobileActive(this); showSection('settings')">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
     </button>
     <button onclick="logoutAdmin()">
         <i class="fa-solid fa-power-off" style="color: #ef4444;"></i>
@@ -437,7 +503,12 @@
     }
     </script>
 
-    <!-- Admin Portal Modules -->
+    <!-- Firebase SDK - LOCAL OFFLINE SOLUTION (Disabled for Real Firebase) -->
+    <!-- <script src="firebase-sdk.js"></script> -->
+    
+    <!-- Firebase Initialization -->
+    <!-- Firebase Initialization is handled in JS/firebase-config.js -->
+    
     <script src="JS/firebase-config.js"></script>
     <script src="JS/auth.js"></script>
     <script src="JS/navigation.js"></script>
@@ -449,6 +520,9 @@
     
     <!-- Order Notification System -->
     <script src="JS/notification.js"></script>
+    
+    <!-- FCM Push Notification System -->
+    <script src="JS/fcm-notification.js"></script>
     
     <!-- PWA Install Management -->
     <script src="JS/pwa-install.js"></script>

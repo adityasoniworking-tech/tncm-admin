@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 1. Menu & Categories: Sabhi dekh sakte hain aur Admin (true) badal sakta hai
+    match /menu/{document=**} {
+      allow read: if true;
+      allow write: if true; 
+    }
+    
+    match /categories/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    // 2. Config rules: Admin login check karne ke liye reading zaroori hai
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 3. Orders Rules: [FIXED FOR ADMIN DASHBOARD]
+    match /orders/{orderId} {
+      allow create: if request.auth != null;
+      allow read, update, delete: if true; 
+    }
+
+    // --- NAYA SECTION: Testimonials ke liye ---
+    match /testimonials/{testimonialId} {
+      allow read: if true;    // Sabhi ko testimonials dikhenge
+      allow write: if true;   // Form se data submit ho payega
+    }
+
+    // --- [NEW] FCM Tokens Rule ---
+    // Fixes "Missing or insufficient permissions" error for notifications
+    match /fcmTokens/{token} {
+      allow read: if true;
+      allow write: if true; // Required for saving tokens
+    }
+  }
+}
