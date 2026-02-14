@@ -8,13 +8,34 @@ const firebaseConfig = {
     appId: "1:547764804378:web:e4a425b9e13c826afaaaa3"
 };
 
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-window.db = firebase.firestore(); // Make db global
-const messaging = firebase.messaging(); 
+// Initialize Firebase Safely
+if (typeof firebase === 'undefined') {
+    console.error('CRITICAL: Firebase SDK not loaded. Check script imports inside head tag.');
+    alert('Firebase SDK failed to load. Please check your internet connection.');
+} else {
+    try {
+        let app;
+        // Check if Firebase is already initialized
+        if (!firebase.apps.length) {
+            app = firebase.initializeApp(firebaseConfig);
+            console.log('Firebase App Initialized');
+        } else {
+            app = firebase.app(); // Use existing app
+            console.log('Review: Using existing Firebase App instance');
+        }
 
-// Make other services global if needed
-window.firebaseApp = app;
-window.messaging = messaging;
+        // Initialize Services & Make Globally Available
+        window.db = firebase.firestore();
+        window.messaging = firebase.messaging();
+        window.auth = firebase.auth();
+        window.storage = firebase.storage();
+        
+        window.firebaseApp = app;
 
-console.log('Firebase Initialized Successfully');
+        console.log('Firebase Services Ready & Globalized');
+
+    } catch (error) {
+        console.error('Firebase Initialization Error:', error);
+        alert('Firebase Config Error: ' + error.message);
+    }
+}

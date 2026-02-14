@@ -47,6 +47,22 @@ function renderOrders(snapshot) {
         container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:#9ca3af; margin-top:50px; background:white; padding:40px; border-radius:12px;">
             <i class="fa-solid fa-box-open" style="font-size:3rem; margin-bottom:15px; opacity:0.5;"></i><br>No orders received.
         </div>`;
+        
+        // Update stats to 0 even if empty
+        const statTotal = document.getElementById('statTotal');
+        const statPending = document.getElementById('statPending');
+        const statRevenue = document.getElementById('statRevenue');
+        const pendingBadge = document.getElementById('pendingCount');
+
+        if (statTotal) statTotal.innerText = '0';
+        if (statPending) statPending.innerText = '0';
+        if (statRevenue) statRevenue.innerText = '₹0.00';
+        
+        if (pendingBadge) {
+            pendingBadge.innerText = '0';
+            pendingBadge.style.display = 'none';
+            pendingBadge.style.opacity = '0';
+        }
         return;
     }
 
@@ -56,6 +72,7 @@ function renderOrders(snapshot) {
         totalOrders++;
         
         if (order.status === "Pending" || order.status === "Payment Awaited") pendingOrders++;
+        // Include 'Accepted' in revenue? Usually only 'Delivered' count as revenue, but let's stick to existing logic for consistency
         if (order.status === "Accepted" || order.status === "Ready" || order.status === "Delivered") totalRevenue += (order.totalAmount || 0);
         
         ordersData.push({ id, ...order });
@@ -67,13 +84,26 @@ function renderOrders(snapshot) {
     renderGridView(ordersData);
 
     // Update stats
-    document.getElementById('statTotal').innerText = totalOrders;
-    document.getElementById('statPending').innerText = pendingOrders;
-    document.getElementById('statRevenue').innerText = "₹" + totalRevenue.toFixed(2).toLocaleString('en-IN');
-    const badge = document.getElementById('pendingCount');
-    if (badge) {
-        badge.innerText = pendingOrders;
-        badge.style.display = pendingOrders > 0 ? 'inline-block' : 'none';
+    const statTotal = document.getElementById('statTotal');
+    const statPending = document.getElementById('statPending');
+    const statRevenue = document.getElementById('statRevenue');
+    const pendingBadge = document.getElementById('pendingCount');
+
+    if (statTotal) statTotal.innerText = totalOrders;
+    if (statPending) statPending.innerText = pendingOrders;
+    if (statRevenue) statRevenue.innerText = "₹" + totalRevenue.toFixed(2).toLocaleString('en-IN');
+    
+    // Update sidebar badge
+    if (pendingBadge) {
+        pendingBadge.innerText = pendingOrders;
+        if (pendingOrders > 0) {
+            pendingBadge.style.display = 'inline-flex'; // Use inline-flex for better alignment
+            pendingBadge.style.opacity = '1';
+        } else {
+            pendingBadge.style.display = 'none';
+            pendingBadge.style.opacity = '0';
+        }
+        console.log('Updated pending count badge:', pendingOrders);
     }
 }
 
@@ -200,6 +230,8 @@ function updateStatus(docId, status) {
         db.collection("orders").doc(docId).update({ status: status })
         .then(() => {
             console.log(`Order ${docId} status set to ${status}`);
+            // Force re-render if snapshot listener doesn't trigger immediately (it should, but safety first)
+            // The onSnapshot listener in startOrderListener WILL trigger automatically
         })
         .catch(error => {
             alert("Error updating status: " + error.message);

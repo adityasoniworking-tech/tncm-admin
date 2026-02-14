@@ -1,4 +1,5 @@
 // --- NAVIGATION & SECTIONS ---
+// --- NAVIGATION & SECTIONS ---
 function showSection(sectionName) {
     // Ensure body scroll is restored
     document.body.style.overflow = '';
@@ -15,25 +16,35 @@ function showSection(sectionName) {
     document.getElementById('dashboardSection').classList.add('hidden');
     document.getElementById('ordersSection').classList.add('hidden');
     document.getElementById('menuSection').classList.add('hidden');
+    document.getElementById('settingsSection').classList.add('hidden');
 
     // Show selected section
-    document.getElementById(sectionName + 'Section').classList.remove('hidden');
+    const section = document.getElementById(sectionName + 'Section');
+    if (section) {
+        section.classList.remove('hidden');
+    }
 
     // Update page title
     const titles = {
         'dashboard': 'Dashboard',
         'orders': 'Orders Management',
-        'menu': 'Menu Management'
+        'menu': 'Menu Management',
+        'settings': 'Settings'
     };
     
     const subtitles = {
         'dashboard': 'Live overview of your bakery',
         'orders': 'Manage incoming orders',
-        'menu': 'Update menu items and pricing'
+        'menu': 'Update menu items and pricing',
+        'settings': 'Configure application preferences'
     };
     
-    document.getElementById('pageTitle').textContent = titles[sectionName];
-    document.getElementById('pageSubTitle').textContent = subtitles[sectionName];
+    if (titles[sectionName]) {
+        document.getElementById('pageTitle').textContent = titles[sectionName];
+    }
+    if (subtitles[sectionName]) {
+        document.getElementById('pageSubTitle').textContent = subtitles[sectionName];
+    }
 
     // Set active navigation
     setActiveNavForSection(sectionName);
@@ -44,7 +55,8 @@ function setActiveNavForSection(sectionName) {
     const sectionToNavMap = {
         'dashboard': 0,    // First nav link
         'orders': 1,      // Second nav link
-        'menu': 2         // Third nav link
+        'menu': 2,        // Third nav link
+        'settings': 3     // Fourth nav link
     };
     
     const navLinks = document.querySelectorAll('.sidebar-menu .nav-link');
