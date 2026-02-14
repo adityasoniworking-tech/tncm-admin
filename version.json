@@ -1,7 +1,7 @@
 {
-  "version": "1.3.0",
-  "buildDate": "2026-02-12",
-  "description": "Admin Portal - thenuttychocomorsels with Configurable Notifications",
+  "version": "1.3.1",
+  "buildDate": "2026-02-14",
+  "description": "Admin Portal - thenuttychocomorsels with Fixed Navigation & Realtime Updates",
   "features": [
     "Dashboard with live stats",
     "Order management",
@@ -16,14 +16,15 @@
     "alert.mp3 notification sound",
     "Automatic permission requests",
     "Visual notification fallback",
-    "System notification panel integration"
+    "System notification panel integration",
+    "Sidebar notification badge sync",
+    "Robust Firebase initialization"
   ],
   "updates": [
-    "Added Notification Settings page",
-    "Implemented sound loop feature",
-    "Added configurable notification cooldown",
-    "Fixed back-to-back order notifications",
-    "Updated mobile meta tags",
-    "Fixed FCM token permission issue"
+    "Fixed navigation panel visibility issue",
+    "Implemented real-time sidebar order count sync",
+    "Refined dashboard analytics to handle empty states",
+    "Robust Firebase initialization to prevent errors",
+    "Fixed 'db is not defined' critical bug"
   ]
 }
