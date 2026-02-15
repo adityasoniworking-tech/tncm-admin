@@ -174,7 +174,7 @@ function renderGridView(ordersData) {
         list.innerHTML += `
             <div class="order-card" style="position: relative;">
                 <div class="card-top" style="position: relative;">
-                    <div><div class="order-id">#${order.id.toUpperCase()}</div><div class="order-time">${timeAgo}</div></div>
+                    <div><div class="order-id">${order.id}</div><div class="order-time">${timeAgo}</div></div>
                     <span class="status-pill status-${order.status.replace(/\s/g, '\\ ')}" style="position: absolute; top: 0; right: 0;">${order.status}</span>
                 </div>
                 <div class="card-body">
@@ -398,7 +398,7 @@ function showItemsPopup(orderId) {
                 
                 <div style="margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 8px; flex-shrink: 0;">
                     <div style="display: grid; grid-template-columns: auto 1fr; gap: 8px; font-size: 14px;">
-                        <strong style="color: #374151;">Order ID:</strong><span>${orderId.toUpperCase()}</span>
+                        <strong style="color: #374151;">Order ID:</strong><span>${orderId}</span>
                         <strong style="color: #374151;">Customer:</strong><span>${order.userName || 'Guest'}</span>
                         <strong style="color: #374151;">Email:</strong><span>${order.userEmail || 'N/A'}</span>
                         <strong style="color: #374151;">Phone:</strong><span>${order.phone || 'N/A'}</span>
