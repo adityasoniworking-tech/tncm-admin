@@ -1,6 +1,6 @@
 {
   "name": "tncm-admin-portal",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "TNCM Bakery Admin Portal",
   "main": "admin.html",
   "scripts": {

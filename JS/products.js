@@ -160,7 +160,7 @@ window.addNewItemViaLink = async function() {
     }
 }
 
-window.deleteMenuItem = async function() {
+window.deleteItemByIdInput = async function() {
     const id = document.getElementById('deleteItemId').value.trim();
     if(!id) return alert("Please enter an Item ID to delete!");
 

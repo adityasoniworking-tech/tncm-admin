@@ -1,4 +1,4 @@
-const CACHE_VERSION = '1.3.1';
+const CACHE_VERSION = '1.3.2';
 const CACHE_NAME = `tncm-admin-portal-v${CACHE_VERSION}`;
 const STATIC_CACHE_NAME = `tncm-admin-static-v${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `tncm-admin-dynamic-v${CACHE_VERSION}`;

@@ -50,7 +50,7 @@ window.confirmDeleteMenuItem = function(docId, itemName) {
 window.deleteMenuItem = async function(docId) {
     try {
         await db.collection("menu").doc(docId).delete();
-        alert("Item '" + itemName + "' (ID: " + docId + ") has been deleted successfully.");
+        alert("Item (ID: " + docId + ") has been deleted successfully.");
         // Reload the menu to show updated list
         loadAdminMenu();
     } catch (e) { 
